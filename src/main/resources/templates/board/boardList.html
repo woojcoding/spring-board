@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>자유게시판 - 목록</h1>
+<form action="/boards/free/list" method="get">
+    <table class="search">
+        <tr>
+            <td>등록일</td>
+            <td><input type="date" name="startDate" th:value= "${param.startDate}"> ~ <input type="date" name="endDate" th:value="${param.endDate}"></td>
+            <td>
+                <select name="categoryId">
+                    <option value="ALL">전체 카테고리</option>
+                    <option th:each="category : ${categoryList}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+                </select>
+            </td>
+            <td> <input type="text"name="keyword" placeholder="검색어를 입력해 주세요.(제목 + 작성자 + 내용)" th:value="${param.keyword}"></td>
+            <td><button type="submit">검색</button></td>
+        </tr>
+    </table>
+</form><br>
+총 &nbsp <span th:text="${boardListDto.totalBoardCount}">0</span> &nbsp 건
+<table class="boardList">
+    <tr>
+        <td>카테고리</td>
+        <td>첨부</td>
+        <td>제목</td>
+        <td>작성자</td>
+        <td>조회수</td>
+        <td>등록 일시</td>
+        <td>수정 일시</td>
+    </tr>
+    <tr th:each="board : ${boardListDto.boardResponseDtoList}">
+        <td th:text="${board.categoryName}"></td>
+        <td>첨부여부아직X</td>
+        <td><a th:href="@{/board(cmd='get', boardId=${board.boardId})}" style="text-decoration:none;" th:text="${board.title}"></a></td>
+        <td th:text="${board.writer}"></td>
+        <td th:text="${board.views}"></td>
+        <td th:text="${board.createdAt}"></td>
+        <td th:text="${board.modifiedAt != null ? board.modifiedAt : '-'}"></td>
+    </tr>
+</table>
+    <button id="post" onclick="location.href='board?cmd=write'">등록</button>
+</body>
+</html>
