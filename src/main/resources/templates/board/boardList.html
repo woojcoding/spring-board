@@ -43,6 +43,93 @@
         <td th:text="${board.modifiedAt != null ? board.modifiedAt : '-'}"></td>
     </tr>
 </table>
-    <button id="post" onclick="location.href='board?cmd=write'">등록</button>
+<p id="paging"></p>
+
+<script>
+    // 현재 페이지
+    var currentPage = [[${boardSearch.pageNum}]];
+
+    // 총 게시글 수
+    var totalBoardCount = [[${boardListDto.totalBoardCount}]];
+
+    // 페이지에 보여질 게시글 수
+    var pageSize = 10;
+
+    // 페이지 블록의 크기
+    var pageLimit = 10;
+
+    // 시작 페이지
+    var startPage = Math.floor((currentPage - 1) / pageLimit) * pageLimit + 1;
+
+    // 마지막 페이지
+    var endPage = startPage + pageLimit - 1;
+
+    // 총 페이지 수
+    var pageCount = Math.ceil(totalBoardCount / pageSize);
+
+    if (endPage > pageCount) {
+        endPage = pageCount
+    }
+
+    var pagingElement = document.getElementById("paging");
+
+    var linkTemplate = "/boards/free/list?" +
+        "pageNum={pageNum}" +
+        "&startDate=[[${boardSearch.startDate}]]" +
+        "&endDate=[[${boardSearch.endDate}]]" +
+        "&categoryId=[[${boardSearch.categoryId}]]" +
+        "&keyword=[[${boardSearch.keyword}]]";
+
+    // 1페이지로 이동
+    var firstLink = document.createElement("a");
+
+    firstLink.href = linkTemplate.replace("{pageNum}", 1);
+    firstLink.textContent = "<<";
+
+    pagingElement.appendChild(firstLink);
+
+    // 이전 페이지 블록으로 이동
+    var prevLink = document.createElement("a");
+
+    prevLink.href = linkTemplate.replace("{pageNum}", Math.max(startPage - pageLimit, 1));
+    prevLink.textContent = "<";
+
+    if (startPage === 1) {
+        prevLink.style.display = "none"; // 첫 번째 페이지 블록이라면 숨김 처리
+    }
+
+    pagingElement.appendChild(prevLink);
+
+    // 페이지 번호
+    for (var pageNum = startPage; pageNum <= endPage && pageNum <= pageCount; pageNum++) {
+        var pageLink = document.createElement("a");
+
+        pageLink.href = linkTemplate.replace("{pageNum}", pageNum);
+        pageLink.textContent = pageNum;
+
+        pagingElement.appendChild(pageLink);
+    }
+
+    // 다음 페이지 블록으로 이동
+    var nextLink = document.createElement("a");
+
+    nextLink.href = linkTemplate.replace("{pageNum}", Math.min(startPage + pageLimit, pageCount));
+    nextLink.textContent = ">";
+
+    if (endPage === pageCount) {
+        nextLink.style.display = "none"; // 마지막 페이지 블록이라면 숨김 처리
+    }
+
+    pagingElement.appendChild(nextLink);
+
+    // 마지막 페이지 블록으로 이동
+    var lastLink = document.createElement("a");
+
+    lastLink.href = linkTemplate.replace("{pageNum}", pageCount);
+    lastLink.textContent = ">>";
+
+    pagingElement.appendChild(lastLink);
+</script>
+<button id="post" onclick="location.href='board?cmd=write'">등록</button>
 </body>
 </html>

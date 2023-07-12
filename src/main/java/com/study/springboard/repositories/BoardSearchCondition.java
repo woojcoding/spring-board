@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class BoardSearchCondition {
 
-    private int pageNum; // 현재 페이지
+    private int pageNum = 1; // 현재 페이지
 
     private String startDate; // 검색 시작일
 

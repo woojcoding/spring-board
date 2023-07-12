@@ -3,6 +3,7 @@ package com.study.springboard.repositories;
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,10 +21,12 @@ public class BoardRepository {
      * 게시글 목록 조회에서 검색 조건에 따라 게시글 정보들을 List로 가져오는 메서드
      *
      * @param boardSearchCondition 검색 조건
+     * @param rowBounds 페이지네이션을 위한 클래스
      * @return List<BoardResponseDto>  게시글 정보 List
      */
-    public List<BoardResponseDto> findAll(BoardSearchCondition boardSearchCondition) {
-        return boardMapper.findAll(boardSearchCondition);
+    public List<BoardResponseDto> findAll(
+            BoardSearchCondition boardSearchCondition, RowBounds rowBounds) {
+        return boardMapper.findAll(boardSearchCondition, rowBounds);
     }
 
     /**

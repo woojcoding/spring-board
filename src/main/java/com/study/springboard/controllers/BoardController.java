@@ -62,7 +62,6 @@ public class BoardController {
                 boardService.getBoard(boardId, true);
 
         model.addAttribute("boardDetailResponseDto", boardDetailResponseDto);
-        model.addAttribute("boardSearchCondition", boardSearchCondition);
 
         return "board/boardDetail";
     }

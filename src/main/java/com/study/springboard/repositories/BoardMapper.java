@@ -3,6 +3,7 @@ package com.study.springboard.repositories;
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardResponseDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
 import java.util.List;
 
@@ -16,9 +17,11 @@ public interface BoardMapper {
      * 게시글 목록 조회에서  검색 조건에 따라 게시글 정보들을 List로 가져오는 메서드
      *
      * @param boardSearchCondition 검색 조건
+     * @param rowBounds 페이지네이션에 사용할 클래스
      * @return List<BoardResponseDto>   게시글 정보 List
      */
-    List<BoardResponseDto> findAll(BoardSearchCondition boardSearchCondition);
+    List<BoardResponseDto> findAll(BoardSearchCondition boardSearchCondition,
+                                   RowBounds rowBounds);
 
     /**
      * 게시글 목록 조회에서  검색 조건에 따라 검색 되는 게시글의 총 수

@@ -10,6 +10,7 @@ import com.study.springboard.repositories.BoardSearchCondition;
 import com.study.springboard.repositories.CommentRepository;
 import com.study.springboard.repositories.FileRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -35,10 +36,26 @@ public class BoardService {
      * @return List<BoardResponseDto>  게시글 정보 List
      */
     public BoardListDto getBoards(BoardSearchCondition boardSearchCondition) {
-        List<BoardResponseDto> boardResponseDtoList =
-                boardRepository.findAll(boardSearchCondition);
 
-        int totalBoardCount = boardRepository.findBoardCount(boardSearchCondition);
+        /**
+         * 페이지 네이션을 위한 rowBounds 인스턴스 생성
+         */
+        int pageNum = boardSearchCondition.getPageNum();
+
+        int pageSize = 10;
+
+        int offset = (pageNum - 1) * pageSize;
+
+        RowBounds rowBounds = new RowBounds(offset, pageSize);
+
+        /**
+         *  db에서 페이지네이션을 적용한 게시글 조회
+         */
+        List<BoardResponseDto> boardResponseDtoList =
+                boardRepository.findAll(boardSearchCondition, rowBounds);
+
+        int totalBoardCount =
+                boardRepository.findBoardCount(boardSearchCondition);
 
         return BoardListDto.builder()
                 .boardResponseDtoList(boardResponseDtoList)
@@ -56,12 +73,15 @@ public class BoardService {
     public BoardDetailResponseDto getBoard(int boardId, boolean updateViews) {
 
         /*
-        *  조회수 증가가 true일 경우에만 조회수를 증가시킴
+        *  조회수 증가가 true일 경우에만 조회수를 증가
         * */
         if (updateViews) {
             boardRepository.updateViews(boardId);
         }
 
+        /**
+         * db에서 게시글, 댓글, 파일들을 조회
+         */
         BoardDetailResponseDto boardDetailResponseDto =
                 boardRepository.findOne(boardId);
 
