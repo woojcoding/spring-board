@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>게시판 - 보기</h2>
+<table>
+  <tr>
+    <td th:text="${boardDetailResponseDto.writer}"></td>
+    <td class="rightAlign" th:text="'등록일시 ' + ${boardDetailResponseDto.createdAt}"></td>
+    <td class="rightAlign" th:text="'수정일시 ' + ${boardDetailResponseDto.modifiedAt != null ? boardDetailResponseDto.modifiedAt : '-'}"></td>
+  </tr>
+  <tr class="title">
+    <td colspan="3"[${boardDetailResponseDto.categoryName}] ${boardDetailResponseDto.title}></td>
+    <td class="rightAlign" th:text="'조회수: ' + ${boardDetailResponseDto.views}"></td>
+  </tr>
+  <tr class="content-row">
+    <td colspan="4" class="content" th:text="${boardDetailResponseDto.content}"></td>
+  </tr>
+  <tr th:each="file : ${boardDetailResponseDto.fileList}">
+    <td colspan="4">
+      <a download th:href="@{/upload/{savedName}(savedName=${file.savedName})}">
+        <span th:text="${file.originalName}"></span>
+      </a>
+    </td>
+  </tr>
+  <tr class="comment" th:each="comment : ${boardDetailResponseDto.commentList}">
+    <td colspan="4">
+      <span th:text="${comment.createdAt}"></span>
+      <br>
+      <span th:text="${comment.content}"></span>
+    </td>
+  </tr>
+  <form action="board/comment?cmd=write&boardId=${boardBean.boardId}" method="post">
+    <tr class="commentEnd">
+      <td colspan="3"><textarea rows="2" cols="250" name="comment" placeholder="댓글을 입력해주세요."></textarea></td>
+      <td><button type="submit">등록</button> </td>
+    </tr>
+  </form>
+  <td class="buttons" colspan="4">
+    <button onclick="location.href='/boards/free/list'">목록</button>
+    <button onclick="location.href='board'">수정</button>
+    <button onclick="location.href='board'">삭제</button>
+  </td>
+</table>
+</body>
+</html>

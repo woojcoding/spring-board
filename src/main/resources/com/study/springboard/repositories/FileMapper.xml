@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.springboard.repositories.FileMapper">
+
+    <select id="findFiles" resultType="File">
+        SELECT file_id, original_name, saved_name, is_deleted, board_id
+        FROM file
+        WHERE board_id = #{boardId} AND is_deleted = 0;
+    </select>
+</mapper>

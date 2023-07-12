@@ -1,5 +1,6 @@
 package com.study.springboard.controllers;
 
+import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardListDto;
 import com.study.springboard.models.Category;
 import com.study.springboard.repositories.BoardSearchCondition;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
@@ -48,5 +50,20 @@ public class BoardController {
         model.addAttribute("categoryList", categoryList);
 
         return "board/boardList";
+    }
+
+    @GetMapping("/view/{boardId}")
+    public String getBoard(@PathVariable("boardId") int boardId,
+                           @ModelAttribute("boardSearch")
+                           BoardSearchCondition boardSearchCondition,
+                           Model model
+    ) {
+        BoardDetailResponseDto boardDetailResponseDto =
+                boardService.getBoard(boardId, true);
+
+        model.addAttribute("boardDetailResponseDto", boardDetailResponseDto);
+        model.addAttribute("boardSearchCondition", boardSearchCondition);
+
+        return "board/boardDetail";
     }
 }

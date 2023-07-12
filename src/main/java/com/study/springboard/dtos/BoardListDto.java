@@ -15,6 +15,4 @@ public class BoardListDto {
     private List<BoardResponseDto> boardResponseDtoList; // 게시글의 정보를 담은 List
 
     private int totalBoardCount; // 게시물 총 수
-
-
 }

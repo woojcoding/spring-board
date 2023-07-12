@@ -24,7 +24,7 @@
 </form><br>
 총 &nbsp <span th:text="${boardListDto.totalBoardCount}">0</span> &nbsp 건
 <table class="boardList">
-    <tr>
+    <tr>|
         <td>카테고리</td>
         <td>첨부</td>
         <td>제목</td>
@@ -36,7 +36,7 @@
     <tr th:each="board : ${boardListDto.boardResponseDtoList}">
         <td th:text="${board.categoryName}"></td>
         <td>첨부여부아직X</td>
-        <td><a th:href="@{/board(cmd='get', boardId=${board.boardId})}" style="text-decoration:none;" th:text="${board.title}"></a></td>
+        <td><a href="boardDetail.html" th:href="@{/boards/free/view/{boardId}(boardId=${board.boardId})}" style="text-decoration:none;" th:text="${board.title}"></a></td>
         <td th:text="${board.writer}"></td>
         <td th:text="${board.views}"></td>
         <td th:text="${board.createdAt}"></td>
