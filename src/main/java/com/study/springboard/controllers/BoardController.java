@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -47,6 +48,7 @@ public class BoardController {
 
         model.addAttribute("boardListDto", boardListDto);
         model.addAttribute("categoryList", categoryList);
+        model.addAttribute("boardSearch", boardSearchCondition);
 
         return "board/boardList";
     }
@@ -60,16 +62,18 @@ public class BoardController {
      * @return the board
      */
     @GetMapping("/boards/free/view/{boardId}")
-    public String getBoard(@PathVariable("boardId") int boardId,
-                           @ModelAttribute("boardSearch")
-                           BoardSearchCondition boardSearchCondition,
-                           Model model
+    public String getBoard(
+            @PathVariable("boardId") int boardId,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            Model model
     ) {
         BoardDetailResponseDto boardDetailResponseDto =
                 boardService.getBoard(boardId, true);
 
         model.addAttribute("boardDetailResponseDto", boardDetailResponseDto);
         model.addAttribute("commentRequestDto", new CommentRequestDto());
+        model.addAttribute("boardSearch", boardSearchCondition);
 
         return "board/boardDetail";
     }
@@ -82,15 +86,42 @@ public class BoardController {
      * @return 게시글 작성폼 반환
      */
     @GetMapping("/board/free/write")
-    public String getWriteForm(@ModelAttribute("boardSearch")
-                                  BoardSearchCondition boardSearchCondition,
-                              Model model
+    public String getWriteForm(
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            Model model
     ) {
         List<Category> categoryList = categoryService.getCategories();
 
         model.addAttribute("boardPostRequestDto", new BoardPostRequestDto());
-        model.addAttribute("categoryList",categoryList);
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("boardSearch", boardSearchCondition);
 
         return "board/boardWriteForm";
+    }
+
+    /**
+     * 게시글을 등록 요청하는 메서드
+     *
+     * @param boardSearchCondition 검색 조건
+     * @param boardPostRequestDto  게시글 등록에 필요한 Dto
+     * @param model                the model
+     * @return the string
+     */
+    @PostMapping("/board/free/write")
+    public String postBoard(
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            @ModelAttribute("boardPostRequestDto")
+            BoardPostRequestDto boardPostRequestDto,
+            Model model
+    ) {
+        boardService.postBoard(boardPostRequestDto);
+
+        int boardId = boardPostRequestDto.getBoardId();
+
+        model.addAttribute("boardSearch", boardSearchCondition);
+
+        return "redirect:/boards/free/view/" + boardId;
     }
 }

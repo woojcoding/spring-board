@@ -2,8 +2,10 @@ package com.study.springboard.services;
 
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardListDto;
+import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardResponseDto;
 import com.study.springboard.dtos.CommentResponseDto;
+import com.study.springboard.exceptions.BoardCanNotPost;
 import com.study.springboard.models.File;
 import com.study.springboard.repositories.BoardRepository;
 import com.study.springboard.repositories.BoardSearchCondition;
@@ -33,7 +35,7 @@ public class BoardService {
      * Repository에 요청하기 위해 사용하는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return List<BoardResponseDto>   게시글 정보 List
+     * @return List<BoardResponseDto>    게시글 정보 List
      */
     public BoardListDto getBoards(BoardSearchCondition boardSearchCondition) {
 
@@ -93,5 +95,62 @@ public class BoardService {
         boardDetailResponseDto.setFileList(fileList);
 
         return boardDetailResponseDto;
+    }
+
+    /**
+     * 게시물을 작성하는 메서드
+     *
+     * @param boardPostRequestDto 게시물 작성 요청 DTO
+     */
+    public void postBoard(BoardPostRequestDto boardPostRequestDto) {
+
+        String categoryId = boardPostRequestDto.getCategoryId();
+
+        String writer = boardPostRequestDto.getWriter();
+
+        String password = boardPostRequestDto.getPassword();
+
+        String password2 = boardPostRequestDto.getPassword2();
+
+        String content = boardPostRequestDto.getContent();
+
+        String title = boardPostRequestDto.getTitle();
+
+        // 작성자 필수, 글자 수 검증
+        if (writer == null || writer.length() < 3 || writer.length() >= 5) {
+            throw new BoardCanNotPost();
+        }
+
+        // 비밀번호 필수, 글자 수, 패턴 검증
+        if (password == null || password.length() < 4
+                || password.length() >= 16
+                || !password.matches("^(?=.*[a-zA-Z])(?=.*\\d)"
+                + "(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]+$")
+        ) {
+            throw new BoardCanNotPost();
+        }
+        // 비밀번호 확인 일치 검증
+        if (!password.equals(password2)) {
+            throw new BoardCanNotPost();
+        }
+
+        // 제목 필수, 글자 수 검증
+        if (title == null || title.length() < 4 || title.length() >= 100) {
+            throw new BoardCanNotPost();
+        }
+
+        // 내용 필수, 글자 수 검증
+        if (content == null || content.length() < 4
+                || content.length() >= 2000
+        ) {
+            throw new BoardCanNotPost();
+        }
+
+        // 카테고리 필수 선택 검증
+        if (categoryId == null || categoryId == "all") {
+            throw new BoardCanNotPost();
+        }
+
+        boardRepository.postBoard(boardPostRequestDto);
     }
 }

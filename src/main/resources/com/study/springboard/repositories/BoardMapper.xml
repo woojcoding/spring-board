@@ -2,6 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.springboard.repositories.BoardMapper">
+    <insert id="postBoard" useGeneratedKeys="true" keyProperty="boardId">
+        INSERT INTO board(writer, password, title, content,
+                          created_at, category_id)
+        VALUES (#{writer}, #{password}, #{title}, #{content},
+                CURRENT_TIMESTAMP, #{categoryId})
+    </insert>
 
     <select id="getBoards" resultType="BoardResponseDto">
         SELECT b.board_id, b.writer, b.title, b.views,

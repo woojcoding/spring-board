@@ -19,14 +19,17 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comments")
-    public String postComment(@PathVariable("boardId") int boardId,
-                              @ModelAttribute("boardSearch")
-                              BoardSearchCondition boardSearchCondition,
-                              @ModelAttribute("commentRequestDto")
-                                  CommentRequestDto commentRequestDto,
-                              Model model
+    public String postComment(
+            @PathVariable("boardId") int boardId,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            @ModelAttribute("commentRequestDto")
+            CommentRequestDto commentRequestDto,
+            Model model
     ) {
         commentService.postComment(boardId, commentRequestDto);
+
+        model.addAttribute("boardSearch", boardSearchCondition);
 
         return "redirect:/boards/free/view/{boardId}";
     }

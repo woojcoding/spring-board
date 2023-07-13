@@ -1,6 +1,7 @@
 package com.study.springboard.repositories;
 
 import com.study.springboard.dtos.BoardDetailResponseDto;
+import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
@@ -21,8 +22,8 @@ public class BoardRepository {
      * 게시글 목록 조회에서 검색 조건에 따라 게시글 정보들을 List로 가져오는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @param rowBounds 페이지네이션을 위한 클래스
-     * @return List<BoardResponseDto>  게시글 정보 List
+     * @param rowBounds            페이지네이션을 위한 클래스
+     * @return List<BoardResponseDto>   게시글 정보 List
      */
     public List<BoardResponseDto> getBoards(
             BoardSearchCondition boardSearchCondition, RowBounds rowBounds) {
@@ -56,5 +57,14 @@ public class BoardRepository {
      */
     public void updateViews(int boardId) {
         boardMapper.updateViews(boardId);
+    }
+
+    /**
+     * 게시물을 작성하는 메서드
+     *
+     * @param boardPostRequestDto 게시물 작성 요청 DTO
+     */
+    public void postBoard(BoardPostRequestDto boardPostRequestDto) {
+        boardMapper.postBoard(boardPostRequestDto);
     }
 }

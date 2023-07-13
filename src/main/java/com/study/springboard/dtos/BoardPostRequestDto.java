@@ -13,11 +13,15 @@ import java.util.List;
 @Setter
 public class BoardPostRequestDto {
 
-    private Integer categoryId; // 카테고리 ID
+    private Integer boardId; // 반환되는 게시글 Id
+
+    private String categoryId; // 카테고리 ID
 
     private String writer; // 작성자
 
     private String password; // 비밀번호
+
+    private String password2; // 재확인용 비밀번호
 
     private String title; // 제목
 

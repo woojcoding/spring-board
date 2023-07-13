@@ -5,9 +5,14 @@
     <title>Title</title>
 </head>
 <body>
+<script th:inline="javascript">
+  var urlParams = new URLSearchParams(window.location.search);
 
-<script>
-  history.replaceState({}, null, location.pathname);
+  var errorMessage = urlParams.get('errorMessage');
+
+  if (errorMessage != null) {
+    alert(errorMessage);
+  }
 
   function validateForm() {
     var category = document.forms["myForm"]["categoryId"].value;
@@ -23,7 +28,7 @@
     var content = document.forms["myForm"]["content"].value;
 
     // 카테고리 필수 선택 검증
-    if (category === "ALL") {
+    if (category === "all") {
       alert("카테고리를 선택해주세요.");
       return false;
     }
@@ -69,7 +74,7 @@
       <th>카테고리</th>
       <td colspan="2">
         <select name="categoryId">
-          <option value="ALL">카테고리 선택</option>
+          <option value="all">카테고리 선택</option>
           <option th:each="category : ${categoryList}"
                   th:value="${category.categoryId}"
                   th:text="${category.categoryName}"></option>
