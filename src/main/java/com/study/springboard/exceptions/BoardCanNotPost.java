@@ -10,25 +10,18 @@ import lombok.Getter;
 public class BoardCanNotPost extends RuntimeException {
 
     private BoardPostRequestDto boardPostRequestDto;
+    private String message;
 
     /**
-     * 새로운 "게시물을 작성할 수 없음" 예외를 생성합니다
+     * 새로운 게시물을 작성할 수 없는 예외를 생성합니다
      *
      * @param boardPostRequestDto 게시물 작성 요청 DTO
      */
-    public BoardCanNotPost(BoardPostRequestDto boardPostRequestDto) {
+    public BoardCanNotPost(BoardPostRequestDto boardPostRequestDto,
+                           String message) {
         super();
-        this.boardPostRequestDto = boardPostRequestDto;
-    }
 
-    /**
-     * 새로운 "게시물을 작성할 수 없음" 예외를 생성합니다.
-     *
-     * @param boardPostRequestDto 게시물 작성 요청 DTO
-     * @param cause               원인이 되는 Throwable 객체
-     */
-    public BoardCanNotPost(BoardPostRequestDto boardPostRequestDto, Throwable cause) {
-        super(cause);
         this.boardPostRequestDto = boardPostRequestDto;
+        this.message = message;
     }
 }

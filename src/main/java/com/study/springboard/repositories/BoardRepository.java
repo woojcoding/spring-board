@@ -75,8 +75,8 @@ public class BoardRepository {
      * @param boardId               게시글 Id
      * @param boardUpdateRequestDto 게시글을 수정하는데 필요한 Dto
      */
-    public void updateBoards(int boardId,
-                             BoardUpdateRequestDto boardUpdateRequestDto) {
+    public void updateBoard(int boardId,
+                            BoardUpdateRequestDto boardUpdateRequestDto) {
         boardMapper.updateBoard(boardId, boardUpdateRequestDto);
     }
 }

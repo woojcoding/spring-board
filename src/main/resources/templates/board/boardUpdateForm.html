@@ -6,6 +6,12 @@
 </head>
 <body>
 <script th:inline="javascript">
+    var errorMessage = [[${errorMessage}]];
+
+    if (errorMessage != null) {
+        alert(errorMessage);
+    }
+
     function validateForm() {
         var writer = document.forms["myForm"]["writer"].value;
 

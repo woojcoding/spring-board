@@ -1,13 +1,17 @@
 package com.study.springboard.exceptions;
 
+import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
+import com.study.springboard.dtos.BoardUpdateRequestDto;
 import com.study.springboard.models.Category;
+import com.study.springboard.services.BoardService;
 import com.study.springboard.services.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -18,6 +22,8 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     private final CategoryService categoryService;
+
+    private final BoardService boardService;
 
     /**
      * BoardCanNotPost 예외가 발생하였을 떄 예외처리하는 메서드
@@ -33,9 +39,44 @@ public class GlobalExceptionHandler {
 
         BoardPostRequestDto boardPostRequestDto = ex.getBoardPostRequestDto();
 
+        String message = ex.getMessage();
+
         modelAndView.addObject("categoryList", categoryList);
-        modelAndView.addObject("errorMessage", "게시물 작성에 실패했습니다.");
+        modelAndView.addObject("errorMessage", message);
         modelAndView.addObject("boardPostRequestDto", boardPostRequestDto);
+
+        return modelAndView;
+    }
+
+    /**
+     * BoardCanNotUpdate 예외가 발생하였을 떄 예외처리하는 메서드
+     *
+     * @param ex 예외
+     * @return the model and view
+     */
+    @ExceptionHandler(BoardCanNotUpdate.class)
+    public ModelAndView handleBoardCanNotUpdate(BoardCanNotUpdate ex,
+                                                HttpServletRequest request
+    ) {
+        ModelAndView modelAndView = new ModelAndView("board/boardUpdateForm");
+
+        int boardId = ex.getBoardId();
+
+        BoardDetailResponseDto boardDetailResponseDto =
+                boardService.getBoard(boardId, false);
+
+        BoardUpdateRequestDto boardUpdateRequestDto =
+                ex.getBoardUpdateRequestDto();
+
+        String message = ex.getMessage();
+
+        boardDetailResponseDto.setWriter(boardUpdateRequestDto.getWriter());
+        boardDetailResponseDto.setContent(boardUpdateRequestDto.getContent());
+        boardDetailResponseDto.setTitle(boardUpdateRequestDto.getTitle());
+
+        modelAndView.addObject("boardDetailResponseDto", boardDetailResponseDto);
+        modelAndView.addObject("errorMessage", message);
+        modelAndView.addObject("boardUpdateRequestDto", boardUpdateRequestDto);
 
         return modelAndView;
     }
