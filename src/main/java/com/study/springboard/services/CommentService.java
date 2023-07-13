@@ -20,7 +20,7 @@ public class CommentService {
      * @param boardId           게시글 Id
      * @param commentRequestDto 게시글 본문을 담은 Dto
      */
-    public void save(int boardId, CommentRequestDto commentRequestDto) {
-        commentRepository.save(boardId, commentRequestDto);
+    public void postComment(int boardId, CommentRequestDto commentRequestDto) {
+        commentRepository.postComment(boardId, commentRequestDto);
     }
 }

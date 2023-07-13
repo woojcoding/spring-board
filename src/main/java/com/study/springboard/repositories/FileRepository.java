@@ -21,7 +21,7 @@ public class FileRepository {
      * @param boardId 게시글 Id
      * @return List<File> 파일 List
      */
-    public List<File> findFiles(int boardId) {
-        return fileMapper.findFiles(boardId);
+    public List<File> getFiles(int boardId) {
+        return fileMapper.getFiles(boardId);
     }
 }

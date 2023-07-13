@@ -22,8 +22,8 @@ public class CommentRepository {
      * @param boardId 게시글 Id
      * @return List<CommentResponseDto>  댓글 List
      */
-    public List<CommentResponseDto> findComments(int boardId) {
-        return commentMapper.findComments(boardId);
+    public List<CommentResponseDto> getComments(int boardId) {
+        return commentMapper.getComments(boardId);
     }
 
     /**
@@ -32,7 +32,7 @@ public class CommentRepository {
      * @param boardId           게시글 Id
      * @param commentRequestDto 게시글 본문을 담은 Dto
      */
-    public void save(int boardId, CommentRequestDto commentRequestDto) {
-        commentMapper.save(boardId, commentRequestDto);
+    public void postComment(int boardId, CommentRequestDto commentRequestDto) {
+        commentMapper.postComment(boardId, commentRequestDto);
     }
 }

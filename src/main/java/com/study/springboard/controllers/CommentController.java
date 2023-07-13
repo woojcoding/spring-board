@@ -26,7 +26,7 @@ public class CommentController {
                                   CommentRequestDto commentRequestDto,
                               Model model
     ) {
-        commentService.save(boardId, commentRequestDto);
+        commentService.postComment(boardId, commentRequestDto);
 
         return "redirect:/boards/free/view/{boardId}";
     }

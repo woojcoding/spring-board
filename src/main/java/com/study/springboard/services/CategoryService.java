@@ -22,6 +22,6 @@ public class CategoryService {
      * @return List<Category> 카테고리 List
      */
     public List<Category> getCategories() {
-        return categoryRepository.findAll();
+        return categoryRepository.getCategories();
     }
 }

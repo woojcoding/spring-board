@@ -17,5 +17,5 @@ public interface FileMapper {
      * @param boardId 게시글 Id
      * @return List<File> 파일 List
      */
-    List<File> findFiles(int boardId);
+    List<File> getFiles(int boardId);
 }

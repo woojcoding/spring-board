@@ -2,12 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.springboard.repositories.CommentMapper">
-    <insert id="save">
+    <insert id="postComment">
         INSERT INTO comment(content, board_id, created_at)
         VALUES (#{commentRequestDto.content}, #{boardId}, CURRENT_TIMESTAMP)
     </insert>
 
-    <select id="findComments" resultType="CommentResponseDto">
+    <select id="getComments" resultType="CommentResponseDto">
         SELECT content, created_at
         FROM comment
         WHERE board_id = #{boardId}

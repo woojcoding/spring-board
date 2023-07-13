@@ -20,7 +20,7 @@ public class CategoryRepository {
      *
      * @return List<Category> 카테고리 List
      */
-    public List<Category> findAll() {
-        return categoryMapper.findAll();
+    public List<Category> getCategories() {
+        return categoryMapper.getCategories();
     }
 }

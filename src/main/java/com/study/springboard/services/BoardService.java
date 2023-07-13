@@ -52,10 +52,10 @@ public class BoardService {
          *  db에서 페이지네이션을 적용한 게시글 조회
          */
         List<BoardResponseDto> boardResponseDtoList =
-                boardRepository.findAll(boardSearchCondition, rowBounds);
+                boardRepository.getBoards(boardSearchCondition, rowBounds);
 
         int totalBoardCount =
-                boardRepository.findBoardCount(boardSearchCondition);
+                boardRepository.getBoardCount(boardSearchCondition);
 
         return BoardListDto.builder()
                 .boardResponseDtoList(boardResponseDtoList)
@@ -83,11 +83,11 @@ public class BoardService {
          * db에서 게시글, 댓글, 파일들을 조회
          */
         BoardDetailResponseDto boardDetailResponseDto =
-                boardRepository.findOne(boardId);
+                boardRepository.getBoard(boardId);
 
-        List<CommentResponseDto> commentList = commentRepository.findComments(boardId);
+        List<CommentResponseDto> commentList = commentRepository.getComments(boardId);
 
-        List<File> fileList = fileRepository.findFiles(boardId);
+        List<File> fileList = fileRepository.getFiles(boardId);
 
         boardDetailResponseDto.setCommentList(commentList);
         boardDetailResponseDto.setFileList(fileList);

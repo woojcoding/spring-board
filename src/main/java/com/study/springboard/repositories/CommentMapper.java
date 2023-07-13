@@ -18,7 +18,7 @@ public interface CommentMapper {
      * @param boardId 게시글 Id
      * @return List<CommentResponseDto>  댓글 List
      */
-    List<CommentResponseDto> findComments(int boardId);
+    List<CommentResponseDto> getComments(int boardId);
 
     /**
      * 댓글을 저장하는 메서드
@@ -26,5 +26,5 @@ public interface CommentMapper {
      * @param boardId           게시글 Id
      * @param commentRequestDto 게시글 본문을 담은 Dto
      */
-    void save(int boardId, CommentRequestDto commentRequestDto);
+    void postComment(int boardId, CommentRequestDto commentRequestDto);
 }
