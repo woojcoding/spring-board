@@ -36,7 +36,7 @@
 </script>
 <h2>게시판 - 수정</h2>
 기본정보
-<form name="myForm" th:action="@{/board/free/modify}"
+<form name="myForm" th:action="@{/board/free/modify/{boardId}(boardId=${boardId})}"
       th:object="${boardUpdateRequestDto}" enctype="multipart/form-data" method="post">
     <table>
         <tr>

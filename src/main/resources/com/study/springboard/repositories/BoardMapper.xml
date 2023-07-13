@@ -82,4 +82,12 @@
         SET views = views + 1
         WHERE board_id = #{boardId}
     </update>
+
+    <update id="updateBoard">
+        update board
+        SET writer = #{boardUpdateRequestDto.writer},
+            title = #{boardUpdateRequestDto.title},
+            content = #{boardUpdateRequestDto.content}
+        WHERE board_id = #{boardId}
+    </update>
 </mapper>

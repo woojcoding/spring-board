@@ -3,6 +3,7 @@ package com.study.springboard.repositories;
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardResponseDto;
+import com.study.springboard.dtos.BoardUpdateRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Repository;
@@ -23,7 +24,7 @@ public class BoardRepository {
      *
      * @param boardSearchCondition 검색 조건
      * @param rowBounds            페이지네이션을 위한 클래스
-     * @return List<BoardResponseDto>   게시글 정보 List
+     * @return List<BoardResponseDto>    게시글 정보 List
      */
     public List<BoardResponseDto> getBoards(
             BoardSearchCondition boardSearchCondition, RowBounds rowBounds) {
@@ -66,5 +67,16 @@ public class BoardRepository {
      */
     public void postBoard(BoardPostRequestDto boardPostRequestDto) {
         boardMapper.postBoard(boardPostRequestDto);
+    }
+
+    /**
+     * 게시글을 수정하는 메서드
+     *
+     * @param boardId               게시글 Id
+     * @param boardUpdateRequestDto 게시글을 수정하는데 필요한 Dto
+     */
+    public void updateBoards(int boardId,
+                             BoardUpdateRequestDto boardUpdateRequestDto) {
+        boardMapper.updateBoard(boardId, boardUpdateRequestDto);
     }
 }

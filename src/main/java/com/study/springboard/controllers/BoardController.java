@@ -150,4 +150,27 @@ public class BoardController {
 
         return "board/boardUpdateForm";
     }
+
+    /**
+     * 게시글을 수정하는 메서드
+     *
+     * @param boardId               게시글 Id
+     * @param boardSearchCondition  검색 조건
+     * @param boardUpdateRequestDto 게시글 수정에 필요한 Dto
+     * @param model                 the model
+     * @return 수정 후 게시글 보기 페이지로 이동
+     */
+    @PostMapping("/board/free/modify/{boardId}")
+    public String updateBoard(
+            @PathVariable("boardId") int boardId,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            @ModelAttribute("boardUpdateRequestDto")
+            BoardUpdateRequestDto boardUpdateRequestDto,
+            Model model
+    ) {
+        boardService.updateBoard(boardId, boardUpdateRequestDto);
+
+        return "redirect:/boards/free/view/" + boardId;
+    }
 }
