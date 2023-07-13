@@ -118,7 +118,7 @@ public class BoardService {
 
         // 작성자 필수, 글자 수 검증
         if (writer == null || writer.length() < 3 || writer.length() >= 5) {
-            throw new BoardCanNotPost();
+            throw new BoardCanNotPost(boardPostRequestDto);
         }
 
         // 비밀번호 필수, 글자 수, 패턴 검증
@@ -127,28 +127,28 @@ public class BoardService {
                 || !password.matches("^(?=.*[a-zA-Z])(?=.*\\d)"
                 + "(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]+$")
         ) {
-            throw new BoardCanNotPost();
+            throw new BoardCanNotPost(boardPostRequestDto);
         }
         // 비밀번호 확인 일치 검증
         if (!password.equals(password2)) {
-            throw new BoardCanNotPost();
+            throw new BoardCanNotPost(boardPostRequestDto);
         }
 
         // 제목 필수, 글자 수 검증
         if (title == null || title.length() < 4 || title.length() >= 100) {
-            throw new BoardCanNotPost();
+            throw new BoardCanNotPost(boardPostRequestDto);
         }
 
         // 내용 필수, 글자 수 검증
         if (content == null || content.length() < 4
                 || content.length() >= 2000
         ) {
-            throw new BoardCanNotPost();
+            throw new BoardCanNotPost(boardPostRequestDto);
         }
 
         // 카테고리 필수 선택 검증
-        if (categoryId == null || categoryId == "all") {
-            throw new BoardCanNotPost();
+        if (categoryId == null || categoryId.equals("all")) {
+            throw new BoardCanNotPost(boardPostRequestDto);
         }
 
         boardRepository.postBoard(boardPostRequestDto);
