@@ -46,7 +46,9 @@
   </form>
   <td class="buttons" colspan="4">
     <button onclick="location.href='/boards/free/list'">목록</button>
-    <button onclick="location.href='board'">수정</button>
+    <a href="boardUpdateForm.html" th:href="@{/board/free/modify/{boardId}(boardId=${boardId})}" style="text-decoration:none;">
+      <button>수정</button>
+    </a>
     <button onclick="location.href='board'">삭제</button>
   </td>
 </table>

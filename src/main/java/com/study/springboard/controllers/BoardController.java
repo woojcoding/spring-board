@@ -3,6 +3,7 @@ package com.study.springboard.controllers;
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardListDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
+import com.study.springboard.dtos.BoardUpdateRequestDto;
 import com.study.springboard.dtos.CommentRequestDto;
 import com.study.springboard.models.Category;
 import com.study.springboard.repositories.BoardSearchCondition;
@@ -123,5 +124,30 @@ public class BoardController {
         model.addAttribute("boardSearch", boardSearchCondition);
 
         return "redirect:/boards/free/view/" + boardId;
+    }
+
+    /**
+     * 게시글 수정 폼을 가져오는 메서드
+     *
+     * @param boardId              게시글 Id
+     * @param boardSearchCondition 검색 조건
+     * @param model                the model
+     * @return 업데이트 폼 반환
+     */
+    @GetMapping("/board/free/modify/{boardId}")
+    public String getUpdateForm(
+            @PathVariable("boardId") int boardId,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            Model model
+    ) {
+        BoardDetailResponseDto boardDetailResponseDto =
+                boardService.getBoard(boardId, false);
+
+        model.addAttribute("boardSearch",boardSearchCondition);
+        model.addAttribute("boardDetailResponseDto", boardDetailResponseDto);
+        model.addAttribute("boardUpdateRequestDto",new BoardUpdateRequestDto());
+
+        return "board/boardUpdateForm";
     }
 }

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script th:inline="javascript">
+    function validateForm() {
+        var writer = document.forms["myForm"]["writer"].value;
+
+        var password = document.forms["myForm"]["password"].value;
+
+        var title = document.forms["myForm"]["title"].value;
+
+        var content = document.forms["myForm"]["content"].value;
+
+        // 작성자 필수, 글자 수 검증
+        if (writer.length < 3 || writer.length >= 5) {
+            alert("작성자는 3글자 이상, 5글자 미만으로 입력해주세요.");
+            return false;
+        }
+
+        // 제목 필수, 글자 수 검증
+        if (title.length < 4 || title.length >= 100) {
+            alert("제목은 4글자 이상, 100글자 미만으로 입력해주세요.");
+            return false;
+        }
+
+        // 내용 필수, 글자 수 검증
+        if (content.length < 4 || content.length >= 2000) {
+            alert("내용은 4글자 이상, 2000글자 미만으로 입력해주세요.");
+            return false;
+        }
+    }
+</script>
+<h2>게시판 - 수정</h2>
+기본정보
+<form name="myForm" th:action="@{/board/free/modify}"
+      th:object="${boardUpdateRequestDto}" enctype="multipart/form-data" method="post">
+    <table>
+        <tr>
+            <th>카테고리</th>
+            <td th:text="${boardDetailResponseDto.categoryName}"></td>
+        </tr>
+        <tr>
+            <th>등록 일시</th>
+            <td th:text="${boardDetailResponseDto.createdAt}"></td>
+        </tr>
+        <tr>
+            <th>수정 일시</th>
+            <td th:text="${boardDetailResponseDto.modifiedAt != null ? boardDetailResponseDto.modifiedAt : '-'}"></td>
+        </tr>
+        <tr>
+            <th>조회수</th>
+            <td th:text="${boardDetailResponseDto.views}"></td>
+        </tr>
+        <tr>
+            <th>작성자</th>
+            <td>
+                <input type="text" name="writer" th:value="${boardDetailResponseDto.writer}">
+            </td>
+        </tr>
+        <tr>
+            <th>비밀번호</th>
+            <td>
+                <input type="password" name="password"
+                       th:field="${boardUpdateRequestDto.password}"
+                       placeholder="비밀번호">
+            </td>
+        </tr>
+        <tr>
+            <th>제목</th>
+            <td>
+                <textarea class="text" rows="1" cols="100" name="title"
+                          th:text="${boardDetailResponseDto.title}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>내용</th>
+            <td>
+                <textarea class="text" rows="10" cols="60" name="content"
+                          th:text="${boardDetailResponseDto.content}"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <th>파일 첨부</th>
+            <td>
+                <table id="fileTable">
+                    <tr th:each="file : ${boardDetailResponseDto.fileList}">
+                            <td>원본이름</td>
+                            <td>
+                                <a download href="/upload/">
+                                    Download
+                                </a>
+                            </td>
+                            <td>
+                                x
+                            </td>
+                        </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <div class="button-left">
+                    <a th:href="@{/boards/free/view/{boardId}(boardId=${boardId})}">취소</a>
+                </div>
+                <div class="button-right">
+                    <button onclick="return validateForm();" class="button">저장</button>
+                </div>
+            </td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>
