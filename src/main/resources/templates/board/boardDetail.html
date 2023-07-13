@@ -33,10 +33,15 @@
       <span th:text="${comment.content}"></span>
     </td>
   </tr>
-  <form action="board/comment?cmd=write&boardId=${boardBean.boardId}" method="post">
+  <form th:action="@{/boards/free/view/{boardId}/comments(boardId=${boardId})}"
+        th:object="${commentRequestDto}" method="post">
     <tr class="commentEnd">
-      <td colspan="3"><textarea rows="2" cols="250" name="comment" placeholder="댓글을 입력해주세요."></textarea></td>
-      <td><button type="submit">등록</button> </td>
+      <td colspan="3">
+        <textarea rows="2" cols="250" th:field="${commentRequestDto.content}" placeholder="댓글을 입력해주세요."></textarea>
+      </td>
+      <td>
+        <button type="submit">등록</button>
+      </td>
     </tr>
   </form>
   <td class="buttons" colspan="4">

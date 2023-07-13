@@ -3,7 +3,7 @@ package com.study.springboard.services;
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardListDto;
 import com.study.springboard.dtos.BoardResponseDto;
-import com.study.springboard.models.Comment;
+import com.study.springboard.dtos.CommentResponseDto;
 import com.study.springboard.models.File;
 import com.study.springboard.repositories.BoardRepository;
 import com.study.springboard.repositories.BoardSearchCondition;
@@ -33,7 +33,7 @@ public class BoardService {
      * Repository에 요청하기 위해 사용하는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return List<BoardResponseDto>  게시글 정보 List
+     * @return List<BoardResponseDto>   게시글 정보 List
      */
     public BoardListDto getBoards(BoardSearchCondition boardSearchCondition) {
 
@@ -85,7 +85,7 @@ public class BoardService {
         BoardDetailResponseDto boardDetailResponseDto =
                 boardRepository.findOne(boardId);
 
-        List<Comment> commentList = commentRepository.findComments(boardId);
+        List<CommentResponseDto> commentList = commentRepository.findComments(boardId);
 
         List<File> fileList = fileRepository.findFiles(boardId);
 

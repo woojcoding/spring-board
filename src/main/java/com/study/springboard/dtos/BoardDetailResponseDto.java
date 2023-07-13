@@ -1,6 +1,5 @@
 package com.study.springboard.dtos;
 
-import com.study.springboard.models.Comment;
 import com.study.springboard.models.File;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +32,7 @@ public class BoardDetailResponseDto {
     /**
      * 댓글 List
      */
-    List<Comment> commentList;
+    List<CommentResponseDto> commentList;
 
     /**
      * 파일 List

@@ -1,6 +1,7 @@
 package com.study.springboard.repositories;
 
-import com.study.springboard.models.Comment;
+import com.study.springboard.dtos.CommentRequestDto;
+import com.study.springboard.dtos.CommentResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -19,9 +20,19 @@ public class CommentRepository {
      * 댓글 목록을 반환해주는 메서드
      *
      * @param boardId 게시글 Id
-     * @return List<Comment> 댓글 List
+     * @return List<CommentResponseDto>  댓글 List
      */
-    public List<Comment> findComments(int boardId) {
+    public List<CommentResponseDto> findComments(int boardId) {
         return commentMapper.findComments(boardId);
+    }
+
+    /**
+     * 댓글을 저장하는 메서드
+     *
+     * @param boardId           게시글 Id
+     * @param commentRequestDto 게시글 본문을 담은 Dto
+     */
+    public void save(int boardId, CommentRequestDto commentRequestDto) {
+        commentMapper.save(boardId, commentRequestDto);
     }
 }

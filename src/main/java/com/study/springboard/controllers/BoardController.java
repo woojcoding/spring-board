@@ -2,6 +2,7 @@ package com.study.springboard.controllers;
 
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardListDto;
+import com.study.springboard.dtos.CommentRequestDto;
 import com.study.springboard.models.Category;
 import com.study.springboard.repositories.BoardSearchCondition;
 import com.study.springboard.services.BoardService;
@@ -43,15 +44,22 @@ public class BoardController {
     ) {
         BoardListDto boardListDto = boardService.getBoards(boardSearchCondition);
 
-        model.addAttribute("boardListDto", boardListDto);
-
         List<Category> categoryList = categoryService.getCategories();
 
+        model.addAttribute("boardListDto", boardListDto);
         model.addAttribute("categoryList", categoryList);
 
         return "board/boardList";
     }
 
+    /**
+     * 게시글 보기 페이지로 이동
+     *
+     * @param boardId              조회할 게시글 Id
+     * @param boardSearchCondition 검색 조건
+     * @param model                the model
+     * @return the board
+     */
     @GetMapping("/view/{boardId}")
     public String getBoard(@PathVariable("boardId") int boardId,
                            @ModelAttribute("boardSearch")
@@ -62,6 +70,7 @@ public class BoardController {
                 boardService.getBoard(boardId, true);
 
         model.addAttribute("boardDetailResponseDto", boardDetailResponseDto);
+        model.addAttribute("commentRequestDto", new CommentRequestDto());
 
         return "board/boardDetail";
     }
