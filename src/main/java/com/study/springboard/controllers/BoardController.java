@@ -2,6 +2,7 @@ package com.study.springboard.controllers;
 
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardListDto;
+import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.CommentRequestDto;
 import com.study.springboard.models.Category;
 import com.study.springboard.repositories.BoardSearchCondition;
@@ -13,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 
@@ -21,7 +21,6 @@ import java.util.List;
  * The type Board controller.
  */
 @Controller
-@RequestMapping("/boards/free")
 @RequiredArgsConstructor
 public class BoardController {
 
@@ -36,7 +35,7 @@ public class BoardController {
      * @param model                the model
      * @return boardList 페이지 반환
      */
-    @GetMapping("/list")
+    @GetMapping("/boards/free/list")
     public String getBoards(
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
@@ -60,7 +59,7 @@ public class BoardController {
      * @param model                the model
      * @return the board
      */
-    @GetMapping("/view/{boardId}")
+    @GetMapping("/boards/free/view/{boardId}")
     public String getBoard(@PathVariable("boardId") int boardId,
                            @ModelAttribute("boardSearch")
                            BoardSearchCondition boardSearchCondition,
@@ -73,5 +72,25 @@ public class BoardController {
         model.addAttribute("commentRequestDto", new CommentRequestDto());
 
         return "board/boardDetail";
+    }
+
+    /**
+     * 게시글 작성 폼을 가져오는 메서드
+     *
+     * @param boardSearchCondition 검색조건
+     * @param model                the model
+     * @return 게시글 작성폼 반환
+     */
+    @GetMapping("/board/free/write")
+    public String getWriteForm(@ModelAttribute("boardSearch")
+                                  BoardSearchCondition boardSearchCondition,
+                              Model model
+    ) {
+        List<Category> categoryList = categoryService.getCategories();
+
+        model.addAttribute("boardPostRequestDto", new BoardPostRequestDto());
+        model.addAttribute("categoryList",categoryList);
+
+        return "board/boardWriteForm";
     }
 }
