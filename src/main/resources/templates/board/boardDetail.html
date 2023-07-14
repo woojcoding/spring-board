@@ -94,9 +94,13 @@
     </div>
 
     <script th:inline="javascript">
-      var errorMessage = [[${errorMessage}]];
+      // 현재 URL에서 errorMessage 파라미터 값을 읽어옴
+      const urlParams = new URLSearchParams(window.location.search);
 
-      if (errorMessage != null) {
+      const errorMessage = urlParams.get('errorMessage');
+
+      // errorMessage 값이 존재하면 알림 표시
+      if (errorMessage) {
         alert(errorMessage);
       }
 

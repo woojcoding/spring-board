@@ -3,7 +3,6 @@ package com.study.springboard.exceptions;
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardUpdateRequestDto;
-import com.study.springboard.dtos.CommentRequestDto;
 import com.study.springboard.models.Category;
 import com.study.springboard.services.BoardService;
 import com.study.springboard.services.CategoryService;
@@ -12,6 +11,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -81,18 +82,19 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BoardCanNotDelete.class)
     public ModelAndView handleBoardCanNotDelete(BoardCanNotDelete ex) {
-        ModelAndView modelAndView = new ModelAndView("board/boardDetail");
-
         int boardId = ex.getBoardId();
-
-        BoardDetailResponseDto boardDetailResponseDto =
-                boardService.getBoard(boardId, true);
-
         String message = ex.getMessage();
 
-        modelAndView.addObject("boardDetailResponseDto", boardDetailResponseDto);
-        modelAndView.addObject("errorMessage", message);
-        modelAndView.addObject("commentRequestDto", new CommentRequestDto());
+        // 리디렉션 URL 생성
+        String encodedErrorMessage =
+                URLEncoder.encode(message, StandardCharsets.UTF_8);
+
+        String redirectUrl =
+                String.format("redirect:/boards/free/view/%d?errorMessage=%s",
+                        boardId, encodedErrorMessage);
+
+        // 리디렉션 URL을 사용하여 새로운 ModelAndView 생성
+        ModelAndView modelAndView = new ModelAndView(redirectUrl);
 
         return modelAndView;
     }
