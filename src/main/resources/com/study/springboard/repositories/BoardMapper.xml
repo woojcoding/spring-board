@@ -88,7 +88,7 @@
         SET writer = #{boardUpdateRequestDto.writer},
             title = #{boardUpdateRequestDto.title},
             content = #{boardUpdateRequestDto.content},
-            modified_at = current_timestamp
+            modified_at = CURRENT_TIMESTAMP
         WHERE board_id = #{boardId}
     </update>
 
