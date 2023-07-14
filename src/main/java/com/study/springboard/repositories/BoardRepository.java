@@ -24,10 +24,11 @@ public class BoardRepository {
      *
      * @param boardSearchCondition 검색 조건
      * @param rowBounds            페이지네이션을 위한 클래스
-     * @return List<BoardResponseDto>      게시글 정보 List
+     * @return List<BoardResponseDto>       게시글 정보 List
      */
     public List<BoardResponseDto> getBoards(
-            BoardSearchCondition boardSearchCondition, RowBounds rowBounds) {
+            BoardSearchCondition boardSearchCondition, RowBounds rowBounds
+    ) {
         return boardMapper.getBoards(boardSearchCondition, rowBounds);
     }
 
@@ -76,7 +77,8 @@ public class BoardRepository {
      * @param boardUpdateRequestDto 게시글을 수정하는데 필요한 Dto
      */
     public void updateBoard(int boardId,
-                            BoardUpdateRequestDto boardUpdateRequestDto) {
+                            BoardUpdateRequestDto boardUpdateRequestDto
+    ) {
         boardMapper.updateBoard(boardId, boardUpdateRequestDto);
     }
 

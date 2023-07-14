@@ -119,7 +119,7 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
-        boardService.postBoard(boardPostRequestDto);
+        boardService.postBoard(boardPostRequestDto, boardSearchCondition);
 
         int boardId = boardPostRequestDto.getBoardId();
 
@@ -177,7 +177,8 @@ public class BoardController {
             BoardUpdateRequestDto boardUpdateRequestDto,
             Model model
     ) {
-        boardService.updateBoard(boardId, boardUpdateRequestDto);
+        boardService.updateBoard(boardId, boardUpdateRequestDto,
+                boardSearchCondition);
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromPath("/boards/free/view/{boardId}")
@@ -205,7 +206,7 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             @RequestParam("password") String password
     ) {
-        boardService.deleteBoard(password, boardId);
+        boardService.deleteBoard(password, boardId, boardSearchCondition);
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromPath("/boards/free/list")

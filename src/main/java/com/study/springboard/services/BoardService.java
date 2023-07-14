@@ -38,7 +38,7 @@ public class BoardService {
      * Repository에 요청하기 위해 사용하는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return List<BoardResponseDto>           게시글 정보 List
+     * @return List<BoardResponseDto>             게시글 정보 List
      */
     public BoardListDto getBoards(BoardSearchCondition boardSearchCondition) {
 
@@ -103,11 +103,13 @@ public class BoardService {
     /**
      * 게시물을 작성하는 메서드
      *
-     * @param boardPostRequestDto 게시물 작성 요청 DTO
+     * @param boardPostRequestDto  게시물 작성 요청 DTO
+     * @param boardSearchCondition 예외 처리시 사용하기 위한 검색 조건
      */
-    public void postBoard(BoardPostRequestDto boardPostRequestDto) {
-
-        validateRequestDto(boardPostRequestDto, 0);
+    public void postBoard(BoardPostRequestDto boardPostRequestDto,
+                          BoardSearchCondition boardSearchCondition
+    ) {
+        validateRequestDto(boardPostRequestDto, 0, boardSearchCondition);
 
         boardRepository.postBoard(boardPostRequestDto);
     }
@@ -117,10 +119,13 @@ public class BoardService {
      *
      * @param boardId               게시글 Id
      * @param boardUpdateRequestDto 게시글을 수정하는데 필요한 Dto
+     * @param boardSearchCondition  예외 처리시 사용하기 위한 검색 조건
      */
     public void updateBoard(int boardId,
-                            BoardUpdateRequestDto boardUpdateRequestDto) {
-        validateRequestDto(boardUpdateRequestDto, boardId);
+                            BoardUpdateRequestDto boardUpdateRequestDto,
+                            BoardSearchCondition boardSearchCondition
+    ) {
+        validateRequestDto(boardUpdateRequestDto, boardId, boardSearchCondition);
 
         boardRepository.updateBoard(boardId, boardUpdateRequestDto);
     }
@@ -132,8 +137,9 @@ public class BoardService {
      * @param boardId
      * @throws BoardCanNotPost 게시물 작성 불가능 예외
      */
-    private void validateRequestDto(Object dto, int boardId)
-            throws BoardCanNotPost {
+    private void validateRequestDto(Object dto, int boardId,
+                                    BoardSearchCondition boardSearchCondition
+    ) throws BoardCanNotPost {
         StringBuilder message = new StringBuilder();
 
         String categoryId = null;
@@ -219,11 +225,11 @@ public class BoardService {
         if (message.length() > 0) {
             if (dto instanceof BoardPostRequestDto) {
                 throw new BoardCanNotPost((BoardPostRequestDto) dto,
-                        message.toString()
+                        boardSearchCondition, message.toString()
                 );
             } else if (dto instanceof BoardUpdateRequestDto) {
                 throw new BoardCanNotUpdate((BoardUpdateRequestDto) dto,
-                        message.toString(), boardId
+                        message.toString(), boardId, boardSearchCondition
                 );
             }
         }
@@ -251,14 +257,18 @@ public class BoardService {
     /**
      * 게시글을 삭제하는 메서드
      *
-     * @param password 비밀번호
-     * @param boardId  게시글 Id
+     * @param password             비밀번호
+     * @param boardId              게시글 Id
+     * @param boardSearchCondition the board search condition
      */
-    public void deleteBoard(String password, int boardId) {
+    public void deleteBoard(String password, int boardId,
+                            BoardSearchCondition boardSearchCondition
+    ) {
         if (validatePassword(password, boardId)) {
             boardRepository.deleteBoard(boardId);
         } else {
-            throw new BoardCanNotDelete("비밀번호가 일치하지 않습니다.", boardId);
+            throw new BoardCanNotDelete("비밀번호가 일치하지 않습니다.", boardId,
+                    boardSearchCondition);
         }
     }
 }
