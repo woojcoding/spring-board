@@ -24,7 +24,7 @@ public class BoardRepository {
      *
      * @param boardSearchCondition 검색 조건
      * @param rowBounds            페이지네이션을 위한 클래스
-     * @return List<BoardResponseDto>     게시글 정보 List
+     * @return List<BoardResponseDto>      게시글 정보 List
      */
     public List<BoardResponseDto> getBoards(
             BoardSearchCondition boardSearchCondition, RowBounds rowBounds) {
@@ -84,9 +84,18 @@ public class BoardRepository {
      * 비밀번호 검증을 위해 비밀번호를 가져오는 메서드
      *
      * @param boardId 게시글 Id
-     * @return 비밀번호
+     * @return 비밀번호 password
      */
     public String getPassword(int boardId) {
         return boardMapper.getPassword(boardId);
+    }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
+    public void deleteBoard(int boardId) {
+        boardMapper.deleteBoard(boardId);
     }
 }

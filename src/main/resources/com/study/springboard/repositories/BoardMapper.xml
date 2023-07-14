@@ -97,4 +97,9 @@
         FROM board
         WHERE board_id = #{boardId}
     </select>
+
+    <delete id="deleteBoard">
+        DELETE FROM board
+        WHERE board_id = #{boardId}
+    </delete>
 </mapper>

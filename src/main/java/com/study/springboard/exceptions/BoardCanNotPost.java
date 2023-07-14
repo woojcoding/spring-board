@@ -10,12 +10,14 @@ import lombok.Getter;
 public class BoardCanNotPost extends RuntimeException {
 
     private BoardPostRequestDto boardPostRequestDto;
+
     private String message;
 
     /**
      * 새로운 게시물을 작성할 수 없는 예외를 생성합니다
      *
      * @param boardPostRequestDto 게시물 작성 요청 DTO
+     * @param message             화면에 보여질 메세지
      */
     public BoardCanNotPost(BoardPostRequestDto boardPostRequestDto,
                            String message) {

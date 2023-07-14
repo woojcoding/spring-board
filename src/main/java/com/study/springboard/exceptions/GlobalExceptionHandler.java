@@ -3,6 +3,7 @@ package com.study.springboard.exceptions;
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardUpdateRequestDto;
+import com.study.springboard.dtos.CommentRequestDto;
 import com.study.springboard.models.Category;
 import com.study.springboard.services.BoardService;
 import com.study.springboard.services.CategoryService;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -55,9 +55,7 @@ public class GlobalExceptionHandler {
      * @return the model and view
      */
     @ExceptionHandler(BoardCanNotUpdate.class)
-    public ModelAndView handleBoardCanNotUpdate(BoardCanNotUpdate ex,
-                                                HttpServletRequest request
-    ) {
+    public ModelAndView handleBoardCanNotUpdate(BoardCanNotUpdate ex) {
         ModelAndView modelAndView = new ModelAndView("board/boardUpdateForm");
 
         int boardId = ex.getBoardId();
@@ -77,6 +75,24 @@ public class GlobalExceptionHandler {
         modelAndView.addObject("boardDetailResponseDto", boardDetailResponseDto);
         modelAndView.addObject("errorMessage", message);
         modelAndView.addObject("boardUpdateRequestDto", boardUpdateRequestDto);
+
+        return modelAndView;
+    }
+
+    @ExceptionHandler(BoardCanNotDelete.class)
+    public ModelAndView handleBoardCanNotDelete(BoardCanNotDelete ex) {
+        ModelAndView modelAndView = new ModelAndView("board/boardDetail");
+
+        int boardId = ex.getBoardId();
+
+        BoardDetailResponseDto boardDetailResponseDto =
+                boardService.getBoard(boardId, true);
+
+        String message = ex.getMessage();
+
+        modelAndView.addObject("boardDetailResponseDto", boardDetailResponseDto);
+        modelAndView.addObject("errorMessage", message);
+        modelAndView.addObject("commentRequestDto", new CommentRequestDto());
 
         return modelAndView;
     }

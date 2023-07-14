@@ -6,6 +6,7 @@ import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardResponseDto;
 import com.study.springboard.dtos.BoardUpdateRequestDto;
 import com.study.springboard.dtos.CommentResponseDto;
+import com.study.springboard.exceptions.BoardCanNotDelete;
 import com.study.springboard.exceptions.BoardCanNotPost;
 import com.study.springboard.exceptions.BoardCanNotUpdate;
 import com.study.springboard.models.File;
@@ -37,7 +38,7 @@ public class BoardService {
      * Repository에 요청하기 위해 사용하는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return List<BoardResponseDto>         게시글 정보 List
+     * @return List<BoardResponseDto>           게시글 정보 List
      */
     public BoardListDto getBoards(BoardSearchCondition boardSearchCondition) {
 
@@ -119,7 +120,6 @@ public class BoardService {
      */
     public void updateBoard(int boardId,
                             BoardUpdateRequestDto boardUpdateRequestDto) {
-
         validateRequestDto(boardUpdateRequestDto, boardId);
 
         boardRepository.updateBoard(boardId, boardUpdateRequestDto);
@@ -134,7 +134,6 @@ public class BoardService {
      */
     private void validateRequestDto(Object dto, int boardId)
             throws BoardCanNotPost {
-
         StringBuilder message = new StringBuilder();
 
         String categoryId = null;
@@ -238,7 +237,6 @@ public class BoardService {
      * @return isValidated  일치하지 않는다면 false를 리턴, 일치한다면 true 리턴
      */
     private boolean validatePassword(String password ,int boardId) {
-
         boolean isValidated = false;
 
         String dbPassword = boardRepository.getPassword(boardId);
@@ -248,5 +246,19 @@ public class BoardService {
         }
 
         return isValidated;
+    }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param password 비밀번호
+     * @param boardId  게시글 Id
+     */
+    public void deleteBoard(String password, int boardId) {
+        if (validatePassword(password, boardId)) {
+            boardRepository.deleteBoard(boardId);
+        } else {
+            throw new BoardCanNotDelete("비밀번호가 일치하지 않습니다.", boardId);
+        }
     }
 }

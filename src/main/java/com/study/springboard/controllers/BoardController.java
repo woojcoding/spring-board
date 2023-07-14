@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -172,5 +173,25 @@ public class BoardController {
         boardService.updateBoard(boardId, boardUpdateRequestDto);
 
         return "redirect:/boards/free/view/" + boardId;
+    }
+
+    /**
+     * 게시글을 삭제하는 메서드
+     *
+     * @param boardId              게시글 Id
+     * @param boardSearchCondition 검색 조건
+     * @param password             비밀번호
+     * @return 삭제 후 게시글 목록으로 이동
+     */
+    @PostMapping("/board/free/delete/{boardId}")
+    public String deleteBoard(
+            @PathVariable("boardId") int boardId,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
+            @RequestParam("password") String password
+    ) {
+        boardService.deleteBoard(password, boardId);
+
+        return "redirect:/boards/free/list";
     }
 }

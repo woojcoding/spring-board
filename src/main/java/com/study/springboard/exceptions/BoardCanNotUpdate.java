@@ -18,7 +18,9 @@ public class BoardCanNotUpdate extends RuntimeException {
     /**
      * 게시물을 수정할 수 없는 예외를 생성합니다
      *
-     * @param boardUpdateRequestDto the board update request dto
+     * @param boardUpdateRequestDto 게시물 수정 요청 DTO
+     * @param message               화면에 보여질 Id
+     * @param boardId               게시글 Id
      */
     public BoardCanNotUpdate(BoardUpdateRequestDto boardUpdateRequestDto,
                              String message, int boardId
