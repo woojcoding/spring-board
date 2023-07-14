@@ -20,7 +20,7 @@ public interface BoardMapper {
      *
      * @param boardSearchCondition 검색 조건
      * @param rowBounds            페이지네이션에 사용할 클래스
-     * @return List<BoardResponseDto>     게시글 정보 List
+     * @return List<BoardResponseDto>      게시글 정보 List
      */
     List<BoardResponseDto> getBoards(BoardSearchCondition boardSearchCondition,
                                      RowBounds rowBounds);
@@ -62,4 +62,12 @@ public interface BoardMapper {
      * @param boardUpdateRequestDto 게시글을 수정하는데 필요한 Dto
      */
     void updateBoard(int boardId, BoardUpdateRequestDto boardUpdateRequestDto);
+
+    /**
+     * 비밀번호 검증을 위해 비밀번호를 가져오는 메서드
+     *
+     * @param boardId 게시글 Id
+     * @return 비밀번호
+     */
+    String getPassword(int boardId);
 }

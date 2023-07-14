@@ -37,7 +37,7 @@ public class BoardService {
      * Repository에 요청하기 위해 사용하는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return List<BoardResponseDto>     게시글 정보 List
+     * @return List<BoardResponseDto>         게시글 정보 List
      */
     public BoardListDto getBoards(BoardSearchCondition boardSearchCondition) {
 
@@ -132,7 +132,9 @@ public class BoardService {
      * @param boardId
      * @throws BoardCanNotPost 게시물 작성 불가능 예외
      */
-    private void validateRequestDto(Object dto, int boardId) throws BoardCanNotPost {
+    private void validateRequestDto(Object dto, int boardId)
+            throws BoardCanNotPost {
+
         StringBuilder message = new StringBuilder();
 
         String categoryId = null;
@@ -188,17 +190,20 @@ public class BoardService {
         }
 
         // 비밀번호 필수, 글자 수, 패턴 검증
-        if (password == null || password.length() < 4
+        if (dto instanceof BoardPostRequestDto
+                && (password == null
+                || password.length() < 4
                 || password.length() >= 16
                 || !password.matches("^(?=.*[a-zA-Z])(?=.*\\d)"
-                + "(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]+$")) {
-
+                + "(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]+$"))) {
             message.append("비밀번호는 4글자 이상, 16글자 미만의 영문,"
                     + " 숫자, 특수문자 조합으로 입력해주세요.\n");
-
         } else if (dto instanceof BoardPostRequestDto
                 && !password.equals(password2)) {
             message.append("비밀번호와 비밀번호 확인이 일치하지 않습니다.\n");
+        } else if (dto instanceof  BoardUpdateRequestDto
+                && !validatePassword(password, boardId)) {
+            message.append("비밀번호가 일치하지 않습니다.\n");
         }
 
         // 제목 필수, 글자 수 검증
@@ -223,5 +228,25 @@ public class BoardService {
                 );
             }
         }
+    }
+
+    /**
+     * 암호가 일치하는지 검사하는 메서드
+     *
+     * @param password     입력한 비밀번호
+     * @param boardId       게시글 Id
+     * @return isValidated  일치하지 않는다면 false를 리턴, 일치한다면 true 리턴
+     */
+    private boolean validatePassword(String password ,int boardId) {
+
+        boolean isValidated = false;
+
+        String dbPassword = boardRepository.getPassword(boardId);
+
+        if (dbPassword.equals(password)) {
+            isValidated = true;
+        }
+
+        return isValidated;
     }
 }

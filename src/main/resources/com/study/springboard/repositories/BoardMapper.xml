@@ -90,4 +90,10 @@
             content = #{boardUpdateRequestDto.content}
         WHERE board_id = #{boardId}
     </update>
+
+    <select id="getPassword" resultType="java.lang.String">
+        SELECT password
+        FROM board
+        WHERE board_id = #{boardId}
+    </select>
 </mapper>
