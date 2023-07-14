@@ -1,6 +1,7 @@
 package com.study.springboard.dtos;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +12,7 @@ import java.util.List;
  */
 @Getter
 @Setter
+@NoArgsConstructor
 public class BoardPostRequestDto {
 
     private Integer boardId; // 반환되는 게시글 Id

@@ -25,9 +25,9 @@
                 AND b.created_at <= #{endDate}
                 ]]>
             </if>
-            <if test="categoryId != null and categoryId != ''
-            and categoryId != 'ALL'">
-                AND b.category_id = #{categoryId}
+            <if test="category != null and category != ''
+            and category != 'ALL'">
+                AND b.category_id = #{category}
             </if>
             <if test="keyword != null and keyword != ''">
                 AND (
@@ -55,9 +55,9 @@
                 AND b.created_at <= #{endDate}
                 ]]>
             </if>
-            <if test="categoryId != null and categoryId != ''
-            and categoryId != 'ALL'">
-                AND b.category_id = #{categoryId}
+            <if test="category != null and category != ''
+            and category != 'ALL'">
+                AND b.category_id = #{category}
             </if>
             <if test="keyword != null and keyword != ''">
                 AND (

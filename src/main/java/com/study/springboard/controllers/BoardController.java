@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -105,26 +106,32 @@ public class BoardController {
     /**
      * 게시글을 등록 요청하는 메서드
      *
-     * @param boardSearchCondition 검색 조건
      * @param boardPostRequestDto  게시글 등록에 필요한 Dto
+     * @param boardSearchCondition 검색 조건
      * @param model                the model
      * @return the string
      */
     @PostMapping("/board/free/write")
     public String postBoard(
-            @ModelAttribute("boardSearch")
-            BoardSearchCondition boardSearchCondition,
             @ModelAttribute("boardPostRequestDto")
             BoardPostRequestDto boardPostRequestDto,
+            @ModelAttribute("boardSearch")
+            BoardSearchCondition boardSearchCondition,
             Model model
     ) {
         boardService.postBoard(boardPostRequestDto);
 
         int boardId = boardPostRequestDto.getBoardId();
 
-        model.addAttribute("boardSearch", boardSearchCondition);
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromPath("/boards/free/view/{boardId}")
+                .queryParam("pageNum", boardSearchCondition.getPageNum())
+                .queryParam("startDate", boardSearchCondition.getStartDate())
+                .queryParam("endDate", boardSearchCondition.getEndDate())
+                .queryParam("category", boardSearchCondition.getCategory())
+                .queryParam("keyword", boardSearchCondition.getKeyword());
 
-        return "redirect:/boards/free/view/" + boardId;
+        return "redirect:" + builder.buildAndExpand(boardId).toUriString();
     }
 
     /**
@@ -172,7 +179,15 @@ public class BoardController {
     ) {
         boardService.updateBoard(boardId, boardUpdateRequestDto);
 
-        return "redirect:/boards/free/view/" + boardId;
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromPath("/boards/free/view/{boardId}")
+                .queryParam("pageNum", boardSearchCondition.getPageNum())
+                .queryParam("startDate", boardSearchCondition.getStartDate())
+                .queryParam("endDate", boardSearchCondition.getEndDate())
+                .queryParam("category", boardSearchCondition.getCategory())
+                .queryParam("keyword", boardSearchCondition.getKeyword());
+
+        return "redirect:" + builder.buildAndExpand(boardId).toUriString();
     }
 
     /**
@@ -192,6 +207,14 @@ public class BoardController {
     ) {
         boardService.deleteBoard(password, boardId);
 
-        return "redirect:/boards/free/list";
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromPath("/boards/free/list")
+                .queryParam("pageNum", boardSearchCondition.getPageNum())
+                .queryParam("startDate", boardSearchCondition.getStartDate())
+                .queryParam("endDate", boardSearchCondition.getEndDate())
+                .queryParam("category", boardSearchCondition.getCategory())
+                .queryParam("keyword", boardSearchCondition.getKeyword());
+
+        return "redirect:" + builder.build().toUriString();
     }
 }

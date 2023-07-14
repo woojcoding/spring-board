@@ -12,7 +12,7 @@
             <td>등록일</td>
             <td><input type="date" name="startDate" th:value= "${param.startDate}"> ~ <input type="date" name="endDate" th:value="${param.endDate}"></td>
             <td>
-                <select name="categoryId">
+                <select name="category">
                     <option value="ALL">전체 카테고리</option>
                     <option th:each="category : ${categoryList}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
                 </select>
@@ -36,7 +36,15 @@
     <tr th:each="board : ${boardListDto.boardResponseDtoList}">
         <td th:text="${board.categoryName}"></td>
         <td>첨부여부아직X</td>
-        <td><a href="boardDetail.html" th:href="@{/boards/free/view/{boardId}(boardId=${board.boardId})}" style="text-decoration:none;" th:text="${board.title}"></a></td>
+        <td>
+            <a href="boardDetail.html" th:href="@{/boards/free/view/{boardId}
+            (boardId=${board.boardId},
+            pageNum=${boardSearch.pageNum},
+            startDate=${boardSearch.startDate},
+            endDate=${boardSearch.endDate},
+            category=${boardSearch.category},
+            keyword=${boardSearch.keyword})}" style="text-decoration:none;" th:text="${board.title}"></a>
+        </td>
         <td th:text="${board.writer}"></td>
         <td th:text="${board.views}"></td>
         <td th:text="${board.createdAt}"></td>
@@ -77,7 +85,7 @@
         "pageNum={pageNum}" +
         "&startDate=[[${boardSearch.startDate}]]" +
         "&endDate=[[${boardSearch.endDate}]]" +
-        "&categoryId=[[${boardSearch.categoryId}]]" +
+        "&category=[[${boardSearch.category}]]" +
         "&keyword=[[${boardSearch.keyword}]]";
 
     // 1페이지로 이동
@@ -130,6 +138,13 @@
 
     pagingElement.appendChild(lastLink);
 </script>
-<button id="post" onclick="location.href='/board/free/write'">등록</button>
+<a href="boardWriteForm.html" th:href="@{/board/free/write
+(pageNum=${boardSearch.pageNum},
+startDate=${boardSearch.startDate},
+endDate=${boardSearch.endDate},
+category=${boardSearch.category},
+keyword=${boardSearch.keyword})}">
+    <button>등록</button>
+</a>
 </body>
 </html>

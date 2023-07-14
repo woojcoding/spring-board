@@ -64,19 +64,23 @@
 </script>
 <h2>게시판 - 등록</h2>
 
-<form name="myForm" th:action="@{/board/free/write}"
+<form name="myForm" th:action="@{/board/free/write/
+(pageNum=${boardSearch.pageNum},
+startDate=${boardSearch.startDate},
+endDate=${boardSearch.endDate},
+category=${boardSearch.category},
+keyword=${boardSearch.keyword})}"
       th:object="${boardPostRequestDto}"
-      onsubmit="return validateForm()" enctype="multipart/form-data" method="post" >
+      onsubmit="return validateForm()" enctype="multipart/form-data" method="post">
   <table>
     <tr>
       <th>카테고리</th>
       <td colspan="2">
-        <select name="categoryId">
+        <select name="categoryId" th:field="*{categoryId}">
           <option value="all">카테고리 선택</option>
           <option th:each="category : ${categoryList}"
                   th:value="${category.categoryId}"
                   th:text="${category.categoryName}"></option>
-        </select>
         </select>
       </td>
     </tr>
@@ -84,14 +88,14 @@
       <th>작성자</th>
       <td>
         <input type="text" name="writer"
-               th:field="${boardPostRequestDto.writer}" id="writer">
+               th:field="*{writer}" id="writer">
       </td>
     </tr>
     <tr>
       <th>비밀번호</th>
       <td>
         <input type="password" placeholder="비밀번호" name="password"
-               th:field="${boardPostRequestDto.password}">
+               th:field="*{password}">
       </td>
       <td>
         <input type="password" placeholder="비밀번호 확인" name="password2">
@@ -101,14 +105,14 @@
       <th>제목</th>
       <td colspan="3">
         <textarea rows="1" cols="60" name="title"
-                                th:field="${boardPostRequestDto.title}"></textarea>
+                                th:field="*{title}"></textarea>
       </td>
     </tr>
     <tr>
       <th>내용</th>
       <td colspan="3">
         <textarea rows="10" cols="60" name="content"
-                                th:field="${boardPostRequestDto.content}"></textarea>
+                                th:field="*{content}"></textarea>
       </td>
     </tr>
     <tr>
@@ -124,7 +128,14 @@
     <tr>
       <td colspan="3" class="button">
         <div class="button-left">
-          <a href="/boards/free/list">취소</a>
+          <a href="boardDetail.html" th:href="@{/boards/free/list/
+          (pageNum=${boardSearch.pageNum},
+          startDate=${boardSearch.startDate},
+          endDate=${boardSearch.endDate},
+          category=${boardSearch.category},
+          keyword=${boardSearch.keyword})}">
+            취소
+          </a>
         </div>
         <div class="button-right">
           <input type="submit" value="저장">

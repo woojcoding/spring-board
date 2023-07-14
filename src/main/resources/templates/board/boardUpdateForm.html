@@ -42,7 +42,12 @@
 </script>
 <h2>게시판 - 수정</h2>
 기본정보
-<form name="myForm" th:action="@{/board/free/modify/{boardId}(boardId=${boardId})}"
+<form name="myForm" th:action="@{/board/free/modify/{boardId}
+(boardId=${boardId},pageNum=${boardSearch.pageNum},
+startDate=${boardSearch.startDate},
+endDate=${boardSearch.endDate},
+category=${boardSearch.category},
+keyword=${boardSearch.keyword})}"
       th:object="${boardUpdateRequestDto}" enctype="multipart/form-data" method="post">
     <table>
         <tr>
@@ -110,7 +115,11 @@
         <tr>
             <td colspan="2">
                 <div class="button-left">
-                    <a th:href="@{/boards/free/view/{boardId}(boardId=${boardId})}">취소</a>
+                    <a th:href="@{/boards/free/view/{boardId}(boardId=${boardId},pageNum=${boardSearch.pageNum},
+                    startDate=${boardSearch.startDate},
+                    endDate=${boardSearch.endDate},
+                    category=${boardSearch.category},
+                    keyword=${boardSearch.keyword})}">취소</a>
                 </div>
                 <div class="button-right">
                     <button onclick="return validateForm();" class="button">저장</button>

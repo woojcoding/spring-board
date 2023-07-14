@@ -16,7 +16,7 @@ public class BoardSearchCondition {
 
     private String endDate; // 검색 종료일
 
-    private String categoryId; // 카테고리 ID
+    private String category; // 카테고리
 
     private String keyword; // 검색 키워드
 }
