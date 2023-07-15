@@ -5,10 +5,13 @@ import com.study.springboard.dtos.BoardListDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardUpdateRequestDto;
 import com.study.springboard.dtos.CommentRequestDto;
+import com.study.springboard.dtos.CommentResponseDto;
+import com.study.springboard.dtos.FileDto;
 import com.study.springboard.models.Category;
 import com.study.springboard.repositories.BoardSearchCondition;
 import com.study.springboard.services.BoardService;
 import com.study.springboard.services.CategoryService;
+import com.study.springboard.services.CommentService;
 import com.study.springboard.services.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -34,6 +37,8 @@ public class BoardController {
     private final BoardService boardService;
 
     private final CategoryService categoryService;
+
+    private final CommentService commentService;
 
     private final FileService fileService;
 
@@ -76,8 +81,20 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
+        // 게시글 정보
         BoardDetailResponseDto boardDetailResponseDto =
                 boardService.getBoard(boardId, true);
+
+        // 댓글 정보
+        List<CommentResponseDto> commentList =
+                commentService.getComments(boardId);
+
+        boardDetailResponseDto.setCommentList(commentList);
+
+        // 파일 정보
+        List<FileDto> fileDtoList = fileService.getFiles(boardId);
+
+        boardDetailResponseDto.setFileDtoList(fileDtoList);
 
         model.addAttribute("boardDetailResponseDto", boardDetailResponseDto);
         model.addAttribute("commentRequestDto", new CommentRequestDto());

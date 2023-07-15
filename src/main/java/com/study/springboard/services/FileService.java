@@ -103,4 +103,14 @@ public class FileService {
 
         return originalName.substring(index + 1);
     }
+
+    /**
+     * 게시글Id로 파일들을 가져오는 메서드
+     *
+     * @param boardId 게시글Id
+     * @return 파일 List
+     */
+    public List<FileDto> getFiles(int boardId) {
+        return fileRepository.getFiles(boardId);
+    }
 }

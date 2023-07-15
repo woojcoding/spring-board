@@ -5,15 +5,11 @@ import com.study.springboard.dtos.BoardListDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardResponseDto;
 import com.study.springboard.dtos.BoardUpdateRequestDto;
-import com.study.springboard.dtos.CommentResponseDto;
-import com.study.springboard.dtos.FileDto;
 import com.study.springboard.exceptions.BoardCanNotDelete;
 import com.study.springboard.exceptions.BoardCanNotPost;
 import com.study.springboard.exceptions.BoardCanNotUpdate;
 import com.study.springboard.repositories.BoardRepository;
 import com.study.springboard.repositories.BoardSearchCondition;
-import com.study.springboard.repositories.CommentRepository;
-import com.study.springboard.repositories.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
@@ -29,10 +25,6 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
-
-    private final CommentRepository commentRepository;
-
-    private final FileRepository fileRepository;
 
     /**
      * 게시글 목록 조회에서 검색 조건에 따라 게시글 정보들을 List로 받도록
@@ -85,18 +77,8 @@ public class BoardService {
             boardRepository.updateViews(boardId);
         }
 
-        /**
-         * db에서 게시글, 댓글, 파일들을 조회
-         */
         BoardDetailResponseDto boardDetailResponseDto =
                 boardRepository.getBoard(boardId);
-
-        List<CommentResponseDto> commentList = commentRepository.getComments(boardId);
-
-        List<FileDto> fileDtoList = fileRepository.getFiles(boardId);
-
-        boardDetailResponseDto.setCommentList(commentList);
-        boardDetailResponseDto.setFileDtoList(fileDtoList);
 
         return boardDetailResponseDto;
     }
@@ -271,5 +253,8 @@ public class BoardService {
             throw new BoardCanNotDelete("비밀번호가 일치하지 않습니다.", boardId,
                     boardSearchCondition);
         }
+    }
+
+    public void downloadFile(int fileId) {
     }
 }
