@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriUtils;
 
@@ -144,7 +143,6 @@ public class BoardController {
     /**
      * 게시글을 등록 요청하는 메서드
      *
-     * @param files                the files
      * @param boardPostRequestDto  게시글 등록에 필요한 Dto
      * @param boardSearchCondition 검색 조건
      * @param model                the model
@@ -153,8 +151,6 @@ public class BoardController {
      */
     @PostMapping("/board/free/write")
     public String postBoard(
-            @RequestParam("file") MultipartFile[] files,
-            @ModelAttribute("boardPostRequestDto")
             BoardPostRequestDto boardPostRequestDto,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
@@ -166,7 +162,7 @@ public class BoardController {
         // 게시글에 첨부된 파일 업로드
         int boardId = boardPostRequestDto.getBoardId();
 
-        fileService.uploadFiles(files, boardId);
+        fileService.uploadFiles(boardPostRequestDto.getFiles(), boardId);
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
@@ -216,7 +212,6 @@ public class BoardController {
     /**
      * 게시글을 수정하는 메서드
      *
-     * @param files                 파일들
      * @param boardId               게시글 Id
      * @param boardSearchCondition  검색 조건
      * @param boardUpdateRequestDto 게시글 수정에 필요한 Dto
@@ -225,7 +220,6 @@ public class BoardController {
      */
     @PostMapping("/board/free/modify/{boardId}")
     public String updateBoard(
-            @RequestParam("file") MultipartFile[] files,
             @PathVariable("boardId") int boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
@@ -241,7 +235,7 @@ public class BoardController {
         fileService.deleteFiles(boardUpdateRequestDto.getDeleteFileIdList());
 
         // 파일 업로드 적용
-        fileService.uploadFiles(files, boardId);
+        fileService.uploadFiles(boardUpdateRequestDto.getFiles(), boardId);
 
         // 검색 조건을 유지시켜  수정된 게시글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder

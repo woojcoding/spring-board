@@ -115,10 +115,8 @@ keyword=${boardSearch.keyword})}"
                     <tr th:each="i : ${#numbers.sequence(boardDetailResponseDto.FileDtoList.size(), 2)}"
                         th:unless="${boardDetailResponseDto.FileDtoList.size() >= 3}">
                         <td>
-                            <input type="file" name="file">
+                            <input type="file" name="files">
                         </td>
-                        <td></td>
-                        <td></td>
                     </tr>
                     </tbody>
                 </table>

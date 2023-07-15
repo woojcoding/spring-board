@@ -3,6 +3,7 @@ package com.study.springboard.dtos;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 게시글 등록에 사용되는 Dto
@@ -25,4 +26,6 @@ public class BoardPostRequestDto {
     private String title; // 제목
 
     private String content; // 내용
+
+    private  MultipartFile[] files; // 파일들
 }
