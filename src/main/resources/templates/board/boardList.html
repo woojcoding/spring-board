@@ -35,7 +35,7 @@
     </tr>
     <tr th:each="board : ${boardListDto.boardResponseDtoList}">
         <td th:text="${board.categoryName}"></td>
-        <td>첨부여부아직X</td>
+        <td th:text="${board.isAttached == true ? 'O' : 'X'}"></td>
         <td>
             <a href="boardDetail.html" th:href="@{/boards/free/view/{boardId}
             (boardId=${board.boardId},
