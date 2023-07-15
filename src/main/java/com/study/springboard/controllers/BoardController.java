@@ -186,6 +186,10 @@ public class BoardController {
         BoardDetailResponseDto boardDetailResponseDto =
                 boardService.getBoard(boardId, false);
 
+        List<FileDto> fileDtoList = fileService.getFiles(boardId);
+
+        boardDetailResponseDto.setFileDtoList(fileDtoList);
+
         model.addAttribute("boardSearch",boardSearchCondition);
         model.addAttribute("boardDetailResponseDto", boardDetailResponseDto);
         model.addAttribute("boardUpdateRequestDto",new BoardUpdateRequestDto());
@@ -261,7 +265,7 @@ public class BoardController {
      * @throws MalformedURLException the malformed url exception
      */
     @GetMapping("/boards/free/view/file/{fileId}")
-    public ResponseEntity<Resource> getFile(@PathVariable int fileId)
+    public ResponseEntity<Resource> getFile(@PathVariable("fileId") int fileId)
             throws MalformedURLException {
         FileDto fileDto = fileService.getFile(fileId);
 

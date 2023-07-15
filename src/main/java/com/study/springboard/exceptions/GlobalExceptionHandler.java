@@ -3,10 +3,12 @@ package com.study.springboard.exceptions;
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardUpdateRequestDto;
+import com.study.springboard.dtos.FileDto;
 import com.study.springboard.models.Category;
 import com.study.springboard.repositories.BoardSearchCondition;
 import com.study.springboard.services.BoardService;
 import com.study.springboard.services.CategoryService;
+import com.study.springboard.services.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +28,8 @@ public class GlobalExceptionHandler {
     private final CategoryService categoryService;
 
     private final BoardService boardService;
+
+    private final FileService fileService;
 
     /**
      * BoardCanNotPost 예외가 발생하였을 떄 예외처리하는 메서드
@@ -71,6 +75,10 @@ public class GlobalExceptionHandler {
 
         BoardDetailResponseDto boardDetailResponseDto =
                 boardService.getBoard(boardId, false);
+
+        List<FileDto> fileDtoList = fileService.getFiles(boardId);
+
+        boardDetailResponseDto.setFileDtoList(fileDtoList);
 
         BoardUpdateRequestDto boardUpdateRequestDto =
                 ex.getBoardUpdateRequestDto();

@@ -99,14 +99,15 @@ keyword=${boardSearch.keyword})}"
             <td>
                 <table id="fileTable">
                     <tr th:each="file : ${boardDetailResponseDto.FileDtoList}">
-                            <td>원본이름</td>
+                            <td th:text="${file.originalName}"></td>
                             <td>
-                                <a download href="/upload/">
+                                <a th:href="@{/boards/free/view/file/{fileId}
+                                (fileId=${file.fileId})}">
                                     Download
                                 </a>
                             </td>
                             <td>
-                                x
+                                <button>x</button>
                             </td>
                         </tr>
                 </table>
