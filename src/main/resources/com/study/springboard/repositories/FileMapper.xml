@@ -19,4 +19,10 @@
         INSERT INTO file(original_name, saved_name, board_id)
         VALUES (#{originalName}, #{savedName}, #{boardId})
     </insert>
+
+    <update id="deleteFile">
+        UPDATE file
+        SET is_deleted = 1
+        WHERE file_id = #{fileId}
+    </update>
 </mapper>

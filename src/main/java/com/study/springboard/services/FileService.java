@@ -123,4 +123,10 @@ public class FileService {
     public FileDto getFile(int fileId) {
         return fileRepository.getFile(fileId);
     }
+
+    public void deleteFiles(List<Integer> deleteFileIdList) {
+        for (int fileId : deleteFileIdList) {
+            fileRepository.deleteFile(fileId);
+        }
+    }
 }

@@ -200,6 +200,7 @@ public class BoardController {
     /**
      * 게시글을 수정하는 메서드
      *
+     * @param files                 파일들
      * @param boardId               게시글 Id
      * @param boardSearchCondition  검색 조건
      * @param boardUpdateRequestDto 게시글 수정에 필요한 Dto
@@ -208,16 +209,25 @@ public class BoardController {
      */
     @PostMapping("/board/free/modify/{boardId}")
     public String updateBoard(
+            @RequestParam("file") MultipartFile[] files,
             @PathVariable("boardId") int boardId,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
             @ModelAttribute("boardUpdateRequestDto")
             BoardUpdateRequestDto boardUpdateRequestDto,
             Model model
-    ) {
+    ) throws IOException {
+        // 게시글 부분 업데이트 적용
         boardService.updateBoard(boardId, boardUpdateRequestDto,
                 boardSearchCondition);
 
+        // 파일 삭제 적용
+        fileService.deleteFiles(boardUpdateRequestDto.getDeleteFileIdList());
+
+        // 파일 업로드 적용
+        fileService.uploadFiles(files, boardId);
+
+        // 리다이렉트 주소 생성 후 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromPath("/boards/free/view/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
@@ -261,7 +271,7 @@ public class BoardController {
      * 파일 다운로드
      *
      * @param fileId 파일 Id
-     * @return 파일
+     * @return 파일 file
      * @throws MalformedURLException the malformed url exception
      */
     @GetMapping("/boards/free/view/file/{fileId}")

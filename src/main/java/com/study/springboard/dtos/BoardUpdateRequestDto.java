@@ -1,13 +1,18 @@
 package com.study.springboard.dtos;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The type Board update request dto.
+ */
 @Getter
 @Setter
+@NoArgsConstructor
 public class BoardUpdateRequestDto {
 
     private Integer boardId; // 게시글 Id
@@ -21,7 +26,7 @@ public class BoardUpdateRequestDto {
     private String content; // 내용
 
     /**
-     * 파일 List
+     * 삭제할 파일 Id들
      */
-    List<MultipartFile> fileList;
+    List<Integer> deleteFileIdList = new ArrayList<>();
 }
