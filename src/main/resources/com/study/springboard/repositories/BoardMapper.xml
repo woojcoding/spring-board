@@ -12,9 +12,12 @@
     <select id="getBoards" resultType="BoardResponseDto">
         SELECT b.board_id, b.writer, b.title, b.views,
                b.created_at, b.modified_at, c.category_name,
-               CASE WHEN EXISTS (
-                   SELECT 1 FROM file WHERE board_id = b.board_id)
-                   THEN 1 ELSE 0 END AS isAttached
+               CASE WHEN EXISTS (SELECT 1
+                                 FROM file
+                                 WHERE board_id = b.board_id)
+                   THEN 1
+                   ELSE 0
+               END AS isAttached
         FROM board AS b
             JOIN category AS c ON b.category_id = c.category_id
         <where>
