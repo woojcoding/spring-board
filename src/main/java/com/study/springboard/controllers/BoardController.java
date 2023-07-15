@@ -14,6 +14,10 @@ import com.study.springboard.services.CategoryService;
 import com.study.springboard.services.CommentService;
 import com.study.springboard.services.FileService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +27,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.web.util.UriUtils;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
@@ -128,10 +135,12 @@ public class BoardController {
     /**
      * 게시글을 등록 요청하는 메서드
      *
+     * @param files                the files
      * @param boardPostRequestDto  게시글 등록에 필요한 Dto
      * @param boardSearchCondition 검색 조건
      * @param model                the model
      * @return the string
+     * @throws IOException the io exception
      */
     @PostMapping("/board/free/write")
     public String postBoard(
@@ -242,5 +251,36 @@ public class BoardController {
                 .queryParam("keyword", boardSearchCondition.getKeyword());
 
         return "redirect:" + builder.build().toUriString();
+    }
+
+    /**
+     * 파일 다운로드
+     *
+     * @param fileId 파일 Id
+     * @return 파일
+     * @throws MalformedURLException the malformed url exception
+     */
+    @GetMapping("/boards/free/view/file/{fileId}")
+    public ResponseEntity<Resource> getFile(@PathVariable int fileId)
+            throws MalformedURLException {
+        FileDto fileDto = fileService.getFile(fileId);
+
+        String originalName = fileDto.getOriginalName();
+
+        String savedName = fileDto.getSavedName();
+
+        UrlResource urlResource =
+                new UrlResource("file:" + fileService.getFullPath(savedName));
+
+        // 다운로드 파일명 인코딩
+        String encodedOriginalName =
+                UriUtils.encode(originalName, StandardCharsets.UTF_8);
+
+        String contentDisposition = "attachment; filename=\""
+                + encodedOriginalName + "\"";
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
+                .body(urlResource);
     }
 }

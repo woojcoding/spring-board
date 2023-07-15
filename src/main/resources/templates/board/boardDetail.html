@@ -41,7 +41,8 @@
   </tr>
   <tr th:each="file : ${boardDetailResponseDto.fileDtoList}">
     <td colspan="4">
-      <a download th:href="@{/upload/{savedName}(savedName=${file.savedName})}">
+      <a th:href="@{/boards/free/view/file/{fileId}
+      (fileId=${file.fileId})}">
         <span th:text="${file.originalName}"></span>
       </a>
     </td>

@@ -113,4 +113,14 @@ public class FileService {
     public List<FileDto> getFiles(int boardId) {
         return fileRepository.getFiles(boardId);
     }
+
+    /**
+     * 파일Id로 파일 정보를 조회하는 메서드
+     *
+     * @param fileId 파일 Id
+     * @return the file
+     */
+    public FileDto getFile(int fileId) {
+        return fileRepository.getFile(fileId);
+    }
 }

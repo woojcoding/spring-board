@@ -4,9 +4,15 @@
 <mapper namespace="com.study.springboard.repositories.FileMapper">
 
     <select id="getFiles" resultType="FileDto">
-        SELECT file_id, original_name, saved_name
+        SELECT file_id, original_name
         FROM file
         WHERE board_id = #{boardId} AND is_deleted = 0
+    </select>
+
+    <select id="getFile" resultType="FileDto">
+        SELECT original_name, saved_name
+        FROM file
+        WHERE file_id = #{fileId}
     </select>
 
     <insert id="postFile">
