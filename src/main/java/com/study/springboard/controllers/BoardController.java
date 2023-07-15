@@ -9,6 +9,7 @@ import com.study.springboard.models.Category;
 import com.study.springboard.repositories.BoardSearchCondition;
 import com.study.springboard.services.BoardService;
 import com.study.springboard.services.CategoryService;
+import com.study.springboard.services.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -31,6 +34,8 @@ public class BoardController {
     private final BoardService boardService;
 
     private final CategoryService categoryService;
+
+    private final FileService fileService;
 
     /**
      * 게시글 목록을 조회하는데 사용되는 메서드.
@@ -113,15 +118,18 @@ public class BoardController {
      */
     @PostMapping("/board/free/write")
     public String postBoard(
+            @RequestParam("file") MultipartFile[] files,
             @ModelAttribute("boardPostRequestDto")
             BoardPostRequestDto boardPostRequestDto,
             @ModelAttribute("boardSearch")
             BoardSearchCondition boardSearchCondition,
             Model model
-    ) {
+    ) throws IOException {
         boardService.postBoard(boardPostRequestDto, boardSearchCondition);
 
         int boardId = boardPostRequestDto.getBoardId();
+
+        fileService.uploadFiles(files, boardId);
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromPath("/boards/free/view/{boardId}")

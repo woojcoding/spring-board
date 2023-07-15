@@ -98,7 +98,7 @@ keyword=${boardSearch.keyword})}"
             <th>파일 첨부</th>
             <td>
                 <table id="fileTable">
-                    <tr th:each="file : ${boardDetailResponseDto.fileList}">
+                    <tr th:each="file : ${boardDetailResponseDto.FileDtoList}">
                             <td>원본이름</td>
                             <td>
                                 <a download href="/upload/">

@@ -1,6 +1,5 @@
 package com.study.springboard.dtos;
 
-import com.study.springboard.models.File;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -37,5 +36,5 @@ public class BoardDetailResponseDto {
     /**
      * 파일 List
      */
-    List<File> fileList;
+    List<FileDto> fileDtoList;
 }

@@ -39,7 +39,7 @@
   <tr class="content-row">
     <td colspan="4" class="content" th:text="${boardDetailResponseDto.content}"></td>
   </tr>
-  <tr th:each="file : ${boardDetailResponseDto.fileList}">
+  <tr th:each="file : ${boardDetailResponseDto.fileDtoList}">
     <td colspan="4">
       <a download th:href="@{/upload/{savedName}(savedName=${file.savedName})}">
         <span th:text="${file.originalName}"></span>

@@ -3,9 +3,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.springboard.repositories.FileMapper">
 
-    <select id="getFiles" resultType="File">
-        SELECT file_id, original_name, saved_name, is_deleted, board_id
+    <select id="getFiles" resultMap="fileResultMap">
+        SELECT file_id, original_name
         FROM file
-        WHERE board_id = #{boardId} AND is_deleted = 0;
+        WHERE board_id = #{boardId} AND is_deleted = 0
     </select>
+
+    <insert id="postFile">
+        INSERT INTO file(original_name, saved_name, board_id)
+        VALUES (#{originalName}, #{savedName}, #{boardId})
+    </insert>
 </mapper>

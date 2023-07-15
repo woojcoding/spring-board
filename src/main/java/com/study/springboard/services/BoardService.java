@@ -6,10 +6,10 @@ import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardResponseDto;
 import com.study.springboard.dtos.BoardUpdateRequestDto;
 import com.study.springboard.dtos.CommentResponseDto;
+import com.study.springboard.dtos.FileDto;
 import com.study.springboard.exceptions.BoardCanNotDelete;
 import com.study.springboard.exceptions.BoardCanNotPost;
 import com.study.springboard.exceptions.BoardCanNotUpdate;
-import com.study.springboard.models.File;
 import com.study.springboard.repositories.BoardRepository;
 import com.study.springboard.repositories.BoardSearchCondition;
 import com.study.springboard.repositories.CommentRepository;
@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -92,10 +93,10 @@ public class BoardService {
 
         List<CommentResponseDto> commentList = commentRepository.getComments(boardId);
 
-        List<File> fileList = fileRepository.getFiles(boardId);
+        List<FileDto> fileDtoList = fileRepository.getFiles(boardId);
 
         boardDetailResponseDto.setCommentList(commentList);
-        boardDetailResponseDto.setFileList(fileList);
+        boardDetailResponseDto.setFileDtoList(fileDtoList);
 
         return boardDetailResponseDto;
     }
@@ -108,7 +109,7 @@ public class BoardService {
      */
     public void postBoard(BoardPostRequestDto boardPostRequestDto,
                           BoardSearchCondition boardSearchCondition
-    ) {
+    ) throws IOException {
         validateRequestDto(boardPostRequestDto, 0, boardSearchCondition);
 
         boardRepository.postBoard(boardPostRequestDto);
