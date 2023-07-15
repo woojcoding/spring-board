@@ -108,6 +108,7 @@ public class BoardService {
                             BoardUpdateRequestDto boardUpdateRequestDto,
                             BoardSearchCondition boardSearchCondition
     ) {
+        // 게시글 요소들 유효성 검증 후 업데이트 적용
         validateRequestDto(boardUpdateRequestDto, boardId, boardSearchCondition);
 
         boardRepository.updateBoard(boardId, boardUpdateRequestDto);
@@ -247,14 +248,12 @@ public class BoardService {
     public void deleteBoard(String password, int boardId,
                             BoardSearchCondition boardSearchCondition
     ) {
+        // 암호를 검증 후 실패 한다면 예외를 throw
         if (validatePassword(password, boardId)) {
             boardRepository.deleteBoard(boardId);
         } else {
             throw new BoardCanNotDelete("비밀번호가 일치하지 않습니다.", boardId,
                     boardSearchCondition);
         }
-    }
-
-    public void downloadFile(int fileId) {
     }
 }

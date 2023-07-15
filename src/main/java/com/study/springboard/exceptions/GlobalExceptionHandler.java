@@ -43,14 +43,19 @@ public class GlobalExceptionHandler {
     public ModelAndView handleBoardCanNotPost(BoardCanNotPost ex) {
         ModelAndView modelAndView = new ModelAndView("board/boardWriteForm");
 
+        // 카테고리 선택을 위한 카테고리 List
         List<Category> categoryList = categoryService.getCategories();
 
+        // 작성 폼 유지를 위한 Dto
         BoardPostRequestDto boardPostRequestDto = ex.getBoardPostRequestDto();
 
+        // alert 할 메세지
         String message = ex.getMessage();
 
+        // 검색 조건 유지
         BoardSearchCondition boardSearchCondition = ex.getBoardSearchCondition();
 
+        // 랜더링을 위한 ModelAndView 객체를 생성하여 반환
         modelAndView.addObject("categoryList", categoryList);
         modelAndView.addObject("errorMessage", message);
         modelAndView.addObject("boardPostRequestDto", boardPostRequestDto);
@@ -73,24 +78,30 @@ public class GlobalExceptionHandler {
 
         int boardId = ex.getBoardId();
 
+        // 게시글 보기 페이지를 위한 게시글 정보
         BoardDetailResponseDto boardDetailResponseDto =
                 boardService.getBoard(boardId, false);
 
+        // 보여줄 파일 List
         List<FileDto> fileDtoList = fileService.getFiles(boardId);
 
         boardDetailResponseDto.setFileDtoList(fileDtoList);
 
+        // 작성중이던 폼 유지를 위한 Dto
         BoardUpdateRequestDto boardUpdateRequestDto =
                 ex.getBoardUpdateRequestDto();
-
-        String message = ex.getMessage();
-
-        BoardSearchCondition boardSearchCondition = ex.getBoardSearchCondition();
 
         boardDetailResponseDto.setWriter(boardUpdateRequestDto.getWriter());
         boardDetailResponseDto.setContent(boardUpdateRequestDto.getContent());
         boardDetailResponseDto.setTitle(boardUpdateRequestDto.getTitle());
 
+        // alert 해줄 메세지
+        String message = ex.getMessage();
+
+        // 검색 조건 유지
+        BoardSearchCondition boardSearchCondition = ex.getBoardSearchCondition();
+
+        // 랜더링을 위한 ModelAndView 객체를 생성하여 반환
         modelAndView.addObject("boardDetailResponseDto", boardDetailResponseDto);
         modelAndView.addObject("errorMessage", message);
         modelAndView.addObject("boardUpdateRequestDto", boardUpdateRequestDto);
@@ -111,8 +122,10 @@ public class GlobalExceptionHandler {
     public ModelAndView handleBoardCanNotDelete(BoardCanNotDelete ex) {
         int boardId = ex.getBoardId();
 
+        // alert 할 메세지
         String message = ex.getMessage();
 
+        // 검색조건 유지
         BoardSearchCondition boardSearchCondition = ex.getBoardSearchCondition();
 
         // 리디렉션 URL 생성
@@ -132,9 +145,10 @@ public class GlobalExceptionHandler {
                 .buildAndExpand(boardId)
                 .toUriString();
 
-        // 필요한 경우 슬래시 인코딩을 원래대로
+        // 필요한 경우 슬래시 인코딩을 원래대로 변경
         redirectUrl.replace("%2F", "/");
 
+        // 리디렉션을 위한 ModelAndView 객체를 생성하여 반환
         ModelAndView modelAndView = new ModelAndView("redirect:" + redirectUrl);
 
         return modelAndView;

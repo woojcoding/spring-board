@@ -55,12 +55,14 @@ public class FileService {
 
         for (MultipartFile multipartFile : files) {
             if (multipartFile.getSize() != 0) {
+                // 저장파일명을 만들어주어 폴더에 저장
                 String originalName = multipartFile.getOriginalFilename();
 
                 String savedName = getSavedName(originalName);
 
                 multipartFile.transferTo(new File(getFullPath(savedName)));
 
+                // db에 반영하기 위해 FileDto를 만들어 List에 담아줌
                 FileDto fileDto = new FileDto(originalName, savedName, boardId);
 
                 savedFileList.add(fileDto);
