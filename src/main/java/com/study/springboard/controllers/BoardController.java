@@ -62,14 +62,18 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
+        // 게시글 정보 조회
         BoardListDto boardListDto = boardService.getBoards(boardSearchCondition);
 
+        // 검색 기능에 필요한 카테고리
         List<Category> categoryList = categoryService.getCategories();
 
+        // model에 값 지정
         model.addAttribute("boardListDto", boardListDto);
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardSearch", boardSearchCondition);
 
+        // 게시글 리스트 페이지 리턴
         return "board/boardList";
     }
 
@@ -88,25 +92,27 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
-        // 게시글 정보
+        // 게시글 정보 조회
         BoardDetailResponseDto boardDetailResponseDto =
                 boardService.getBoard(boardId, true);
 
-        // 댓글 정보
+        // 댓글 정보 조회
         List<CommentResponseDto> commentList =
                 commentService.getComments(boardId);
 
         boardDetailResponseDto.setCommentList(commentList);
 
-        // 파일 정보
+        // 파일 정보 조회
         List<FileDto> fileDtoList = fileService.getFiles(boardId);
 
         boardDetailResponseDto.setFileDtoList(fileDtoList);
 
+        // model에 값 지정
         model.addAttribute("boardDetailResponseDto", boardDetailResponseDto);
         model.addAttribute("commentRequestDto", new CommentRequestDto());
         model.addAttribute("boardSearch", boardSearchCondition);
 
+        // 게시글 보기 페이지 리턴
         return "board/boardDetail";
     }
 
@@ -123,12 +129,15 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
+        // 카테고리 지정을 위한 카테고리 조회
         List<Category> categoryList = categoryService.getCategories();
 
+        // model에 값 지정
         model.addAttribute("boardPostRequestDto", new BoardPostRequestDto());
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("boardSearch", boardSearchCondition);
 
+        // 게시글 작성 페이지 리턴
         return "board/boardWriteForm";
     }
 
@@ -151,12 +160,15 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) throws IOException {
+        // 게시글을 post
         boardService.postBoard(boardPostRequestDto, boardSearchCondition);
 
+        // 게시글에 첨부된 파일 업로드
         int boardId = boardPostRequestDto.getBoardId();
 
         fileService.uploadFiles(files, boardId);
 
+        // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromPath("/boards/free/view/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
@@ -183,17 +195,21 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
+        // 조회수를 올리지 않고 게시글 정보를 조회
         BoardDetailResponseDto boardDetailResponseDto =
                 boardService.getBoard(boardId, false);
 
+        // 게시글 Id로 파일 조회
         List<FileDto> fileDtoList = fileService.getFiles(boardId);
 
         boardDetailResponseDto.setFileDtoList(fileDtoList);
 
+        // model에 값 지정
         model.addAttribute("boardSearch",boardSearchCondition);
         model.addAttribute("boardDetailResponseDto", boardDetailResponseDto);
         model.addAttribute("boardUpdateRequestDto",new BoardUpdateRequestDto());
 
+        // 게시글 수정 페이지  리턴
         return "board/boardUpdateForm";
     }
 
@@ -227,7 +243,7 @@ public class BoardController {
         // 파일 업로드 적용
         fileService.uploadFiles(files, boardId);
 
-        // 리다이렉트 주소 생성 후 리다이렉트
+        // 검색 조건을 유지시켜  수정된 게시글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromPath("/boards/free/view/{boardId}")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
@@ -254,8 +270,10 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             @RequestParam("password") String password
     ) {
+        // 게시글을 삭제
         boardService.deleteBoard(password, boardId, boardSearchCondition);
 
+        // 검색 조건을 유지시켜 게시글 리스트 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromPath("/boards/free/list")
                 .queryParam("pageNum", boardSearchCondition.getPageNum())
@@ -277,12 +295,15 @@ public class BoardController {
     @GetMapping("/boards/free/view/file/{fileId}")
     public ResponseEntity<Resource> getFile(@PathVariable("fileId") int fileId)
             throws MalformedURLException {
+        // 파일 조회
         FileDto fileDto = fileService.getFile(fileId);
 
+        // 원본 이름과 저장된 이름 가져옴
         String originalName = fileDto.getOriginalName();
 
         String savedName = fileDto.getSavedName();
 
+        //파일의 경로를 생성하여 UrlResource 생성
         UrlResource urlResource =
                 new UrlResource("file:" + fileService.getFullPath(savedName));
 
@@ -290,9 +311,11 @@ public class BoardController {
         String encodedOriginalName =
                 UriUtils.encode(originalName, StandardCharsets.UTF_8);
 
+        // Content-Disposition 헤더를 설정하여 다운로드할 파일의 이름을 지정
         String contentDisposition = "attachment; filename=\""
                 + encodedOriginalName + "\"";
 
+        // ResponseEntity를 사용하여 파일을 응답으로 반환
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition)
                 .body(urlResource);
