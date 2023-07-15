@@ -3,7 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.springboard.repositories.FileMapper">
 
-    <select id="getFiles" resultMap="fileResultMap">
+    <select id="getFiles" resultType="FileDto">
         SELECT file_id, original_name
         FROM file
         WHERE board_id = #{boardId} AND is_deleted = 0
