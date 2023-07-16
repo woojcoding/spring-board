@@ -14,7 +14,8 @@
                b.created_at, b.modified_at, c.category_name,
                CASE WHEN EXISTS (SELECT 1
                                  FROM file
-                                 WHERE board_id = b.board_id)
+                                 WHERE board_id = b.board_id
+                                   AND is_deleted = 0)
                    THEN 1
                    ELSE 0
                END AS isAttached
