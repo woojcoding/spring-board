@@ -1,5 +1,7 @@
 package com.study.springboard.dtos;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,6 +12,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class FileDto {
 
     private Integer fileId; // 파일 ID
@@ -19,17 +23,4 @@ public class FileDto {
     private String savedName; // 저장된 파일명
 
     private int boardId; // 게시글 Id
-
-    /**
-     * 생성자
-     *
-     * @param originalName 원본 이름
-     * @param savedName    저장된 이름
-     * @param boardId      게시글 Id
-     */
-    public FileDto(String originalName, String savedName, int boardId) {
-        this.originalName = originalName;
-        this.savedName = savedName;
-        this.boardId = boardId;
-    }
 }

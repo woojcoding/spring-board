@@ -60,7 +60,11 @@ public class FileService {
                 multipartFile.transferTo(new File(getFullPath(savedName)));
 
                 // db에 반영하기 위해 FileDto를 만들어 List에 담아줌
-                FileDto fileDto = new FileDto(originalName, savedName, boardId);
+                FileDto fileDto = FileDto.builder()
+                        .originalName(originalName)
+                        .savedName(savedName)
+                        .boardId(boardId)
+                        .build();
 
                 savedFileList.add(fileDto);
             }
