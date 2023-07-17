@@ -130,9 +130,9 @@ public class FileService {
     }
 
     /**
-     * Delete files.
+     * file들의 isDeleted = 1 로 해주는 메서드
      *
-     * @param deleteFileIdList the delete file id list
+     * @param deleteFileIdList 지울 FileId List
      */
     public void deleteFiles(List<Integer> deleteFileIdList) {
         for (int fileId : deleteFileIdList) {
@@ -140,6 +140,11 @@ public class FileService {
         }
     }
 
+    /**
+     * 게시글 Id에 해당하는 file들의 isDeleted = 1 로 해주는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
     public void deleteFilesByBoardId(int boardId) {
         fileRepository.deleteFilesByBoardId(boardId);
     }

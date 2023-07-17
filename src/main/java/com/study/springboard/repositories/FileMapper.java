@@ -15,7 +15,7 @@ public interface FileMapper {
      * 파일 목록을 반환해주는 메서드
      *
      * @param boardId 게시글 Id
-     * @return List<File>    파일 List
+     * @return List<File>     파일 List
      */
     List<FileDto> getFileList(int boardId);
 
@@ -41,5 +41,10 @@ public interface FileMapper {
      */
     void deleteFile(int fileId);
 
+    /**
+     * 게시글 Id에 해당하는 file들의 isDeleted = 1 로 해주는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
     void deleteFilesByBoardId(int boardId);
 }

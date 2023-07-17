@@ -19,7 +19,7 @@ public class FileRepository {
      * 파일 목록을 반환해주는 메서드
      *
      * @param boardId 게시글 Id
-     * @return List<File>    파일 List
+     * @return List<File>     파일 List
      */
     public List<FileDto> getFileList(int boardId) {
         return fileMapper.getFileList(boardId);
@@ -53,6 +53,11 @@ public class FileRepository {
         fileMapper.deleteFile(fileId);
     }
 
+    /**
+     * 게시글 Id에 해당하는 file들의 isDeleted = 1 로 해주는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
     public void deleteFilesByBoardId(int boardId) {
         fileMapper.deleteFilesByBoardId(boardId);
     }
