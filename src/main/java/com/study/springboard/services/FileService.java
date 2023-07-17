@@ -26,16 +26,13 @@ public class FileService {
     private final FileRepository fileRepository;
 
     /**
-     * 파일을 업로드 후 db에 정보를 저장하는 메서드
+     * 파일 db에 정보를 저장하는 메서드
      *
-     * @param files   파일들
-     * @param boardId 게시글 Id
+     * @param fileDtoList 파일 Dto List
      * @throws IOException the io exception
      */
-    public void uploadFiles(MultipartFile[] files, int boardId)
+    public void uploadFiles(List<FileDto> fileDtoList)
             throws IOException {
-        List<FileDto> fileDtoList = saveFiles(files, boardId);
-
         for (FileDto fileDto : fileDtoList) {
             fileRepository.postFile(fileDto);
         }
@@ -126,9 +123,18 @@ public class FileService {
         return fileRepository.getFile(fileId);
     }
 
+    /**
+     * Delete files.
+     *
+     * @param deleteFileIdList the delete file id list
+     */
     public void deleteFiles(List<Integer> deleteFileIdList) {
         for (int fileId : deleteFileIdList) {
             fileRepository.deleteFile(fileId);
         }
+    }
+
+    public void deleteFilesByBoardId(int boardId) {
+        fileRepository.deleteFilesByBoardId(boardId);
     }
 }

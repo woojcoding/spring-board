@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.util.UriUtils;
 
@@ -162,7 +163,11 @@ public class BoardController {
         // 게시글에 첨부된 파일 업로드
         int boardId = boardPostRequestDto.getBoardId();
 
-        fileService.uploadFiles(boardPostRequestDto.getFiles(), boardId);
+        MultipartFile[] files = boardPostRequestDto.getFiles();
+
+        List<FileDto> fileDtoList = fileService.saveFiles(files, boardId);
+
+        fileService.uploadFiles(fileDtoList);
 
         // 검색 조건을 유지시켜 작성된 글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
@@ -235,7 +240,11 @@ public class BoardController {
         fileService.deleteFiles(boardUpdateRequestDto.getDeleteFileIdList());
 
         // 파일 업로드 적용
-        fileService.uploadFiles(boardUpdateRequestDto.getFiles(), boardId);
+        MultipartFile[] files = boardUpdateRequestDto.getFiles();
+
+        List<FileDto> fileDtoList = fileService.saveFiles(files, boardId);
+
+        fileService.uploadFiles(fileDtoList);
 
         // 검색 조건을 유지시켜  수정된 게시글 상세보기 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder
@@ -266,6 +275,9 @@ public class BoardController {
     ) {
         // 게시글을 삭제
         boardService.deleteBoard(password, boardId, boardSearchCondition);
+
+        // 파일 삭제
+        fileService.deleteFilesByBoardId(boardId);
 
         // 검색 조건을 유지시켜 게시글 리스트 페이지로 리다이렉트
         UriComponentsBuilder builder = UriComponentsBuilder

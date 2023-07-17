@@ -40,4 +40,6 @@ public interface FileMapper {
      * @param fileId 파일 Id
      */
     void deleteFile(int fileId);
+
+    void deleteFilesByBoardId(int boardId);
 }

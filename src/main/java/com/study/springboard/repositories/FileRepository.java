@@ -52,4 +52,8 @@ public class FileRepository {
     public void deleteFile(int fileId) {
         fileMapper.deleteFile(fileId);
     }
+
+    public void deleteFilesByBoardId(int boardId) {
+        fileMapper.deleteFilesByBoardId(boardId);
+    }
 }

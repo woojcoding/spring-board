@@ -25,4 +25,10 @@
         SET is_deleted = 1
         WHERE file_id = #{fileId}
     </update>
+
+    <update id="deleteFilesByBoardId">
+        UPDATE file
+        SET is_deleted = 1
+        WHERE board_id = #{boardId}
+    </update>
 </mapper>
