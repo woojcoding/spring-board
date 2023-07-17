@@ -80,7 +80,7 @@ public class GlobalExceptionHandler {
 
         // 게시글 보기 페이지를 위한 게시글 정보
         BoardDetailResponseDto boardDetailResponseDto =
-                boardService.getBoard(boardId, false);
+                boardService.getBoard(boardId);
 
         // 보여줄 파일 List
         List<FileDto> fileDtoList = fileService.getFileList(boardId);

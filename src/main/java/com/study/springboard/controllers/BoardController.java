@@ -93,8 +93,10 @@ public class BoardController {
             Model model
     ) {
         // 게시글 정보 조회
+        boardService.updateViews(boardId);
+
         BoardDetailResponseDto boardDetailResponseDto =
-                boardService.getBoard(boardId, true);
+                boardService.getBoard(boardId);
 
         // 댓글 정보 조회
         List<CommentResponseDto> commentList =
@@ -196,9 +198,9 @@ public class BoardController {
             BoardSearchCondition boardSearchCondition,
             Model model
     ) {
-        // 조회수를 올리지 않고 게시글 정보를 조회
+        // 게시글 정보를 조회
         BoardDetailResponseDto boardDetailResponseDto =
-                boardService.getBoard(boardId, false);
+                boardService.getBoard(boardId);
 
         // 게시글 Id로 파일 조회
         List<FileDto> fileDtoList = fileService.getFileList(boardId);

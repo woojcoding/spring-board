@@ -32,7 +32,7 @@ public class BoardService {
      * Repository에 요청하기 위해 사용하는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return List<BoardResponseDto>              게시글 정보 List
+     * @return List<BoardResponseDto>               게시글 정보 List
      */
     public BoardListDto getBoardList(BoardSearchCondition boardSearchCondition) {
 
@@ -65,23 +65,23 @@ public class BoardService {
     /**
      * 게시글의 정보를 가져오는 메서드
      *
-     * @param boardId     조회할 게시글의 Id
-     * @param updateViews 조회수를 증가시킬지의 여부
+     * @param boardId 조회할 게시글의 Id
      * @return BoardDetailResponseDto 게시글 정보
      */
-    public BoardDetailResponseDto getBoard(int boardId, boolean updateViews) {
-
-        /*
-        *  조회수 증가가 true일 경우에만 조회수를 증가
-        * */
-        if (updateViews) {
-            boardRepository.updateViews(boardId);
-        }
-
+    public BoardDetailResponseDto getBoard(int boardId) {
         BoardDetailResponseDto boardDetailResponseDto =
                 boardRepository.getBoard(boardId);
 
         return boardDetailResponseDto;
+    }
+
+    /**
+     * 조회수 증가하는 메서드
+     *
+     * @param boardId 게시글 Id
+     */
+    public void updateViews(int boardId) {
+        boardRepository.updateViews(boardId);
     }
 
     /**
