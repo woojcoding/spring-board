@@ -20,7 +20,7 @@ public class CategoryRepository {
      *
      * @return List<Category> 카테고리 List
      */
-    public List<CategoryDto> getCategories() {
-        return categoryMapper.getCategories();
+    public List<CategoryDto> getCategoryList() {
+        return categoryMapper.getCategoryList();
     }
 }

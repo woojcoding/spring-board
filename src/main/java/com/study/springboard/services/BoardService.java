@@ -33,7 +33,7 @@ public class BoardService {
      * @param boardSearchCondition 검색 조건
      * @return List<BoardResponseDto>             게시글 정보 List
      */
-    public BoardListDto getBoards(BoardSearchCondition boardSearchCondition) {
+    public BoardListDto getBoardList(BoardSearchCondition boardSearchCondition) {
 
         /**
          * 페이지 네이션을 위한 rowBounds 인스턴스 생성
@@ -50,7 +50,7 @@ public class BoardService {
          *  db에서 페이지네이션을 적용한 게시글 조회
          */
         List<BoardResponseDto> boardResponseDtoList =
-                boardRepository.getBoards(boardSearchCondition, rowBounds);
+                boardRepository.getBoardList(boardSearchCondition, rowBounds);
 
         int totalBoardCount =
                 boardRepository.getBoardCount(boardSearchCondition);

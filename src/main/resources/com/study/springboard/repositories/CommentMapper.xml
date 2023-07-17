@@ -7,7 +7,7 @@
         VALUES (#{commentRequestDto.content}, #{boardId}, CURRENT_TIMESTAMP)
     </insert>
 
-    <select id="getComments" resultType="CommentResponseDto">
+    <select id="getCommentList" resultType="CommentResponseDto">
         SELECT content, created_at
         FROM comment
         WHERE board_id = #{boardId}

@@ -16,5 +16,5 @@ public interface CategoryMapper {
      *
      * @return List<Category> 카테고리 List
      */
-    List<CategoryDto> getCategories();
+    List<CategoryDto> getCategoryList();
 }

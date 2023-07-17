@@ -21,7 +21,7 @@ public class CategoryService {
      *
      * @return List<Category> 카테고리 List
      */
-    public List<CategoryDto> getCategories() {
-        return categoryRepository.getCategories();
+    public List<CategoryDto> getCategoryList() {
+        return categoryRepository.getCategoryList();
     }
 }

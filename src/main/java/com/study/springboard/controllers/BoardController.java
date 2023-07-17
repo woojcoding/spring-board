@@ -63,10 +63,10 @@ public class BoardController {
             Model model
     ) {
         // 게시글 정보 조회
-        BoardListDto boardListDto = boardService.getBoards(boardSearchCondition);
+        BoardListDto boardListDto = boardService.getBoardList(boardSearchCondition);
 
         // 검색 기능에 필요한 카테고리
-        List<CategoryDto> categoryDtoList = categoryService.getCategories();
+        List<CategoryDto> categoryDtoList = categoryService.getCategoryList();
 
         // model에 값 지정
         model.addAttribute("boardListDto", boardListDto);
@@ -98,12 +98,12 @@ public class BoardController {
 
         // 댓글 정보 조회
         List<CommentResponseDto> commentList =
-                commentService.getComments(boardId);
+                commentService.getCommentList(boardId);
 
         boardDetailResponseDto.setCommentList(commentList);
 
         // 파일 정보 조회
-        List<FileDto> fileDtoList = fileService.getFiles(boardId);
+        List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
         boardDetailResponseDto.setFileDtoList(fileDtoList);
 
@@ -130,7 +130,7 @@ public class BoardController {
             Model model
     ) {
         // 카테고리 지정을 위한 카테고리 조회
-        List<CategoryDto> categoryDtoList = categoryService.getCategories();
+        List<CategoryDto> categoryDtoList = categoryService.getCategoryList();
 
         // model에 값 지정
         model.addAttribute("boardPostRequestDto", new BoardPostRequestDto());
@@ -201,7 +201,7 @@ public class BoardController {
                 boardService.getBoard(boardId, false);
 
         // 게시글 Id로 파일 조회
-        List<FileDto> fileDtoList = fileService.getFiles(boardId);
+        List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
         boardDetailResponseDto.setFileDtoList(fileDtoList);
 

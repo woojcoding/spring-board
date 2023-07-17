@@ -23,8 +23,8 @@ public class CommentService {
      * @param boardId 게시글 Id
      * @return 댓글 List
      */
-    public List<CommentResponseDto> getComments(int boardId) {
-        return commentRepository.getComments(boardId);
+    public List<CommentResponseDto> getCommentList(int boardId) {
+        return commentRepository.getCommentList(boardId);
     }
 
     /**

@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
         ModelAndView modelAndView = new ModelAndView("board/boardWriteForm");
 
         // 카테고리 선택을 위한 카테고리 List
-        List<CategoryDto> categoryDtoList = categoryService.getCategories();
+        List<CategoryDto> categoryDtoList = categoryService.getCategoryList();
 
         // 작성 폼 유지를 위한 Dto
         BoardPostRequestDto boardPostRequestDto = ex.getBoardPostRequestDto();
@@ -83,7 +83,7 @@ public class GlobalExceptionHandler {
                 boardService.getBoard(boardId, false);
 
         // 보여줄 파일 List
-        List<FileDto> fileDtoList = fileService.getFiles(boardId);
+        List<FileDto> fileDtoList = fileService.getFileList(boardId);
 
         boardDetailResponseDto.setFileDtoList(fileDtoList);
 

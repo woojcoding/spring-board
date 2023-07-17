@@ -26,10 +26,10 @@ public class BoardRepository {
      * @param rowBounds            페이지네이션을 위한 클래스
      * @return List<BoardResponseDto>       게시글 정보 List
      */
-    public List<BoardResponseDto> getBoards(
+    public List<BoardResponseDto> getBoardList(
             BoardSearchCondition boardSearchCondition, RowBounds rowBounds
     ) {
-        return boardMapper.getBoards(boardSearchCondition, rowBounds);
+        return boardMapper.getBoardList(boardSearchCondition, rowBounds);
     }
 
     /**

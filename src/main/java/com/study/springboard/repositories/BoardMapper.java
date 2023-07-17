@@ -22,8 +22,8 @@ public interface BoardMapper {
      * @param rowBounds            페이지네이션에 사용할 클래스
      * @return List<BoardResponseDto>       게시글 정보 List
      */
-    List<BoardResponseDto> getBoards(BoardSearchCondition boardSearchCondition,
-                                     RowBounds rowBounds);
+    List<BoardResponseDto> getBoardList(BoardSearchCondition boardSearchCondition,
+                                        RowBounds rowBounds);
 
     /**
      * 게시글 목록 조회에서  검색 조건에 따라 검색 되는 게시글의 총 수
