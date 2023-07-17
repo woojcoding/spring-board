@@ -2,6 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.springboard.repositories.BoardMapper">
+
+    <!-- 게시글을 board 테이블에 저장 후 생성된 boardId를 리턴 -->
     <insert id="postBoard" useGeneratedKeys="true" keyProperty="boardId">
         INSERT INTO board(writer, password, title, content,
                           created_at, category_id)
@@ -9,6 +11,7 @@
                 CURRENT_TIMESTAMP, #{categoryId})
     </insert>
 
+    <!-- 검색 조건을 적용하여 게시글의 정보, 파일 존재 여부를 조회 -->
     <select id="getBoardList" resultType="BoardResponseDto">
         SELECT b.board_id, b.writer, b.title, b.views,
                b.created_at, b.modified_at, c.category_name,
@@ -47,6 +50,7 @@
         ORDER BY b.board_id DESC;
     </select>
 
+    <!-- 검색 조건을 적용하여 게시글의 총 개수를 조회 -->
     <select id="getBoardCount" resultType="java.lang.Integer">
         SELECT COUNT(*) as totalBoardCount
         FROM board AS b
@@ -76,6 +80,7 @@
         </where>
     </select>
 
+    <!-- 게시글Id로 게시글의 정보를 조회 -->
     <select id="getBoard" resultType="BoardDetailResponseDto">
         SELECT b.board_id, b.writer, b.title, b.content, b.views,
                b.created_at, b.modified_at, c.category_name
@@ -84,12 +89,14 @@
         WHERE board_id = #{boardId}
     </select>
 
+    <!-- 게시글의 조회수를 +1 업데이트 -->
     <update id="updateViews">
         UPDATE board
         SET views = views + 1
         WHERE board_id = #{boardId}
     </update>
 
+    <!-- 게시글의 작성자, 제목, 내용, 수정일을 업데이트 -->
     <update id="updateBoard">
         update board
         SET writer = #{boardUpdateRequestDto.writer},
@@ -99,12 +106,14 @@
         WHERE board_id = #{boardId}
     </update>
 
+    <!-- 게시글의 암호를 조회 -->
     <select id="getPassword" resultType="java.lang.String">
         SELECT password
         FROM board
         WHERE board_id = #{boardId}
     </select>
 
+    <!-- 게시글을 삭제 -->
     <delete id="deleteBoard">
         DELETE FROM board
         WHERE board_id = #{boardId}
