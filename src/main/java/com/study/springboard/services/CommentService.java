@@ -5,6 +5,7 @@ import com.study.springboard.dtos.CommentResponseDto;
 import com.study.springboard.repositories.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,6 +34,7 @@ public class CommentService {
      * @param boardId           게시글 Id
      * @param commentRequestDto 게시글 본문을 담은 Dto
      */
+    @Transactional
     public void postComment(int boardId, CommentRequestDto commentRequestDto) {
         commentRepository.postComment(boardId, commentRequestDto);
     }

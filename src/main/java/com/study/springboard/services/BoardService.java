@@ -13,6 +13,7 @@ import com.study.springboard.repositories.BoardSearchCondition;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.List;
@@ -90,6 +91,7 @@ public class BoardService {
      * @param boardSearchCondition 예외 처리시 사용하기 위한 검색 조건
      * @throws IOException the io exception
      */
+    @Transactional
     public void postBoard(
             BoardPostRequestDto boardPostRequestDto,
             BoardSearchCondition boardSearchCondition
@@ -106,6 +108,7 @@ public class BoardService {
      * @param boardUpdateRequestDto 게시글을 수정하는데 필요한 Dto
      * @param boardSearchCondition  예외 처리시 사용하기 위한 검색 조건
      */
+    @Transactional
     public void updateBoard(int boardId,
                             BoardUpdateRequestDto boardUpdateRequestDto,
                             BoardSearchCondition boardSearchCondition
@@ -253,6 +256,7 @@ public class BoardService {
      * @param boardId              게시글 Id
      * @param boardSearchCondition the board search condition
      */
+    @Transactional
     public void deleteBoard(String password, int boardId,
                             BoardSearchCondition boardSearchCondition
     ) {

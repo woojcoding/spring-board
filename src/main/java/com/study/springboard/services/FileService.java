@@ -5,6 +5,7 @@ import com.study.springboard.repositories.FileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -31,6 +32,7 @@ public class FileService {
      * @param fileDtoList 파일 Dto List
      * @throws IOException the io exception
      */
+    @Transactional
     public void uploadFiles(List<FileDto> fileDtoList)
             throws IOException {
         for (FileDto fileDto : fileDtoList) {
