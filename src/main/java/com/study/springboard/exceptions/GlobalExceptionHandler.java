@@ -3,8 +3,8 @@ package com.study.springboard.exceptions;
 import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardUpdateRequestDto;
+import com.study.springboard.dtos.CategoryDto;
 import com.study.springboard.dtos.FileDto;
-import com.study.springboard.models.Category;
 import com.study.springboard.repositories.BoardSearchCondition;
 import com.study.springboard.services.BoardService;
 import com.study.springboard.services.CategoryService;
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
         ModelAndView modelAndView = new ModelAndView("board/boardWriteForm");
 
         // 카테고리 선택을 위한 카테고리 List
-        List<Category> categoryList = categoryService.getCategories();
+        List<CategoryDto> categoryDtoList = categoryService.getCategories();
 
         // 작성 폼 유지를 위한 Dto
         BoardPostRequestDto boardPostRequestDto = ex.getBoardPostRequestDto();
@@ -56,7 +56,7 @@ public class GlobalExceptionHandler {
         BoardSearchCondition boardSearchCondition = ex.getBoardSearchCondition();
 
         // 랜더링을 위한 ModelAndView 객체를 생성하여 반환
-        modelAndView.addObject("categoryList", categoryList);
+        modelAndView.addObject("categoryList", categoryDtoList);
         modelAndView.addObject("errorMessage", message);
         modelAndView.addObject("boardPostRequestDto", boardPostRequestDto);
         modelAndView.addObject("boardSearch", boardSearchCondition);

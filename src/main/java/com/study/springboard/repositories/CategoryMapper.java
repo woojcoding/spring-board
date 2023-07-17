@@ -1,6 +1,6 @@
 package com.study.springboard.repositories;
 
-import com.study.springboard.models.Category;
+import com.study.springboard.dtos.CategoryDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -16,5 +16,5 @@ public interface CategoryMapper {
      *
      * @return List<Category> 카테고리 List
      */
-    List<Category> getCategories();
+    List<CategoryDto> getCategories();
 }

@@ -1,11 +1,11 @@
-package com.study.springboard.models;
+package com.study.springboard.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class Category {
+public class CategoryDto {
 
     private Integer categoryId; // 카테고리 ID
 

@@ -4,10 +4,10 @@ import com.study.springboard.dtos.BoardDetailResponseDto;
 import com.study.springboard.dtos.BoardListDto;
 import com.study.springboard.dtos.BoardPostRequestDto;
 import com.study.springboard.dtos.BoardUpdateRequestDto;
+import com.study.springboard.dtos.CategoryDto;
 import com.study.springboard.dtos.CommentRequestDto;
 import com.study.springboard.dtos.CommentResponseDto;
 import com.study.springboard.dtos.FileDto;
-import com.study.springboard.models.Category;
 import com.study.springboard.repositories.BoardSearchCondition;
 import com.study.springboard.services.BoardService;
 import com.study.springboard.services.CategoryService;
@@ -65,11 +65,11 @@ public class BoardController {
         BoardListDto boardListDto = boardService.getBoards(boardSearchCondition);
 
         // 검색 기능에 필요한 카테고리
-        List<Category> categoryList = categoryService.getCategories();
+        List<CategoryDto> categoryDtoList = categoryService.getCategories();
 
         // model에 값 지정
         model.addAttribute("boardListDto", boardListDto);
-        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("categoryList", categoryDtoList);
         model.addAttribute("boardSearch", boardSearchCondition);
 
         // 게시글 리스트 페이지 리턴
@@ -129,11 +129,11 @@ public class BoardController {
             Model model
     ) {
         // 카테고리 지정을 위한 카테고리 조회
-        List<Category> categoryList = categoryService.getCategories();
+        List<CategoryDto> categoryDtoList = categoryService.getCategories();
 
         // model에 값 지정
         model.addAttribute("boardPostRequestDto", new BoardPostRequestDto());
-        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("categoryList", categoryDtoList);
         model.addAttribute("boardSearch", boardSearchCondition);
 
         // 게시글 작성 페이지 리턴

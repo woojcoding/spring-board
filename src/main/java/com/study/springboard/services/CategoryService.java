@@ -1,6 +1,6 @@
 package com.study.springboard.services;
 
-import com.study.springboard.models.Category;
+import com.study.springboard.dtos.CategoryDto;
 import com.study.springboard.repositories.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class CategoryService {
      *
      * @return List<Category> 카테고리 List
      */
-    public List<Category> getCategories() {
+    public List<CategoryDto> getCategories() {
         return categoryRepository.getCategories();
     }
 }

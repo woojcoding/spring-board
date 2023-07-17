@@ -1,6 +1,6 @@
 package com.study.springboard.repositories;
 
-import com.study.springboard.models.Category;
+import com.study.springboard.dtos.CategoryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +20,7 @@ public class CategoryRepository {
      *
      * @return List<Category> 카테고리 List
      */
-    public List<Category> getCategories() {
+    public List<CategoryDto> getCategories() {
         return categoryMapper.getCategories();
     }
 }
