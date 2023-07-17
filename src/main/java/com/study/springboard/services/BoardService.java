@@ -31,7 +31,7 @@ public class BoardService {
      * Repository에 요청하기 위해 사용하는 메서드
      *
      * @param boardSearchCondition 검색 조건
-     * @return List<BoardResponseDto>             게시글 정보 List
+     * @return List<BoardResponseDto>              게시글 정보 List
      */
     public BoardListDto getBoardList(BoardSearchCondition boardSearchCondition) {
 
@@ -88,11 +88,13 @@ public class BoardService {
      *
      * @param boardPostRequestDto  게시물 작성 요청 DTO
      * @param boardSearchCondition 예외 처리시 사용하기 위한 검색 조건
+     * @throws IOException the io exception
      */
-    public void postBoard(BoardPostRequestDto boardPostRequestDto,
-                          BoardSearchCondition boardSearchCondition
+    public void postBoard(
+            BoardPostRequestDto boardPostRequestDto,
+            BoardSearchCondition boardSearchCondition
     ) throws IOException {
-        validateRequestDto(boardPostRequestDto, 0, boardSearchCondition);
+        validatePostRequestDto(boardPostRequestDto, boardSearchCondition);
 
         boardRepository.postBoard(boardPostRequestDto);
     }
@@ -109,69 +111,32 @@ public class BoardService {
                             BoardSearchCondition boardSearchCondition
     ) {
         // 게시글 요소들 유효성 검증 후 업데이트 적용
-        validateRequestDto(boardUpdateRequestDto, boardId, boardSearchCondition);
+        validateUpdateRequestDto(boardUpdateRequestDto, boardId,
+                boardSearchCondition);
 
         boardRepository.updateBoard(boardId, boardUpdateRequestDto);
     }
 
     /**
-     * 게시물 작성 요청 DTO의 유효성을 검사하는 메서드
+     * 게시물 수정 요청 DTO의 유효성을 검사하는 메서드
      *
-     * @param dto     게시물 작성 요청 DTO
-     * @param boardId
+     * @param boardUpdateRequestDto     게시물 수정 요청 DTO\
+     * @param boardId                   게시글 Id
      * @throws BoardCanNotPost 게시물 작성 불가능 예외
      */
-    private void validateRequestDto(Object dto, int boardId,
-                                    BoardSearchCondition boardSearchCondition
-    ) throws BoardCanNotPost {
+    private void validateUpdateRequestDto(
+            BoardUpdateRequestDto boardUpdateRequestDto,
+            int boardId,
+            BoardSearchCondition boardSearchCondition) {
         StringBuilder message = new StringBuilder();
 
-        String categoryId = null;
+        String writer = boardUpdateRequestDto.getWriter();
 
-        String writer = null;
+        String password = boardUpdateRequestDto.getPassword();
 
-        String password = null;
+        String title = boardUpdateRequestDto.getTitle();
 
-        String password2 = null;
-
-        String title = null;
-
-        String content = null;
-
-        if (dto instanceof BoardPostRequestDto) {
-            BoardPostRequestDto boardPostRequestDto = (BoardPostRequestDto) dto;
-
-            categoryId = boardPostRequestDto.getCategoryId();
-
-            writer = boardPostRequestDto.getWriter();
-
-            password = boardPostRequestDto.getPassword();
-
-            password2 = boardPostRequestDto.getPassword2();
-
-            title = boardPostRequestDto.getTitle();
-
-            content = boardPostRequestDto.getContent();
-        } else if (dto instanceof BoardUpdateRequestDto) {
-            BoardUpdateRequestDto boardUpdateRequestDto =
-                    (BoardUpdateRequestDto) dto;
-
-            writer = boardUpdateRequestDto.getWriter();
-
-            password = boardUpdateRequestDto.getPassword();
-
-            title = boardUpdateRequestDto.getTitle();
-
-            content = boardUpdateRequestDto.getContent();
-        } else {
-            throw new IllegalArgumentException("Invalid DTO type.");
-        }
-
-        // 카테고리 필수 선택 검증
-        if (dto instanceof BoardPostRequestDto
-                && ( categoryId == null || categoryId.equals("all"))) {
-            message.append("카테고리를 선택해주세요.\n");
-        }
+        String content = boardUpdateRequestDto.getContent();
 
         // 작성자 필수, 글자 수 검증
         if (writer == null || writer.length() < 3 || writer.length() >= 5) {
@@ -179,20 +144,11 @@ public class BoardService {
         }
 
         // 비밀번호 필수, 글자 수, 패턴 검증
-        if (dto instanceof BoardPostRequestDto
-                && (password == null
-                || password.length() < 4
-                || password.length() >= 16
+        if (password == null || password.length() < 4 || password.length() >= 16
                 || !password.matches("^(?=.*[a-zA-Z])(?=.*\\d)"
-                + "(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]+$"))) {
+                + "(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]+$")) {
             message.append("비밀번호는 4글자 이상, 16글자 미만의 영문,"
                     + " 숫자, 특수문자 조합으로 입력해주세요.\n");
-        } else if (dto instanceof BoardPostRequestDto
-                && !password.equals(password2)) {
-            message.append("비밀번호와 비밀번호 확인이 일치하지 않습니다.\n");
-        } else if (dto instanceof  BoardUpdateRequestDto
-                && !validatePassword(password, boardId)) {
-            message.append("비밀번호가 일치하지 않습니다.\n");
         }
 
         // 제목 필수, 글자 수 검증
@@ -207,15 +163,67 @@ public class BoardService {
         }
 
         if (message.length() > 0) {
-            if (dto instanceof BoardPostRequestDto) {
-                throw new BoardCanNotPost((BoardPostRequestDto) dto,
-                        boardSearchCondition, message.toString()
-                );
-            } else if (dto instanceof BoardUpdateRequestDto) {
-                throw new BoardCanNotUpdate((BoardUpdateRequestDto) dto,
-                        message.toString(), boardId, boardSearchCondition
-                );
-            }
+            throw new BoardCanNotUpdate(boardUpdateRequestDto,
+                    message.toString(), boardId, boardSearchCondition);
+        }
+
+    }
+
+    /**
+     * 게시물 작성 요청 DTO의 유효성을 검사하는 메서드
+     *
+     * @param boardPostRequestDto     게시물 작성 요청 DTO
+     * @throws BoardCanNotPost 게시물 작성 불가능 예외
+     */
+    private void validatePostRequestDto(
+            BoardPostRequestDto boardPostRequestDto,
+            BoardSearchCondition boardSearchCondition
+    ) throws BoardCanNotPost {
+        StringBuilder message = new StringBuilder();
+
+        String categoryId = boardPostRequestDto.getCategoryId();
+
+        String writer = boardPostRequestDto.getWriter();
+
+        String password = boardPostRequestDto.getPassword();
+
+        String title =  boardPostRequestDto.getTitle();
+
+        String content = boardPostRequestDto.getContent();
+
+        // 카테고리 필수 선택 검증
+        if ( categoryId == null || categoryId.equals("all")) {
+            message.append("카테고리를 선택해주세요.\n");
+        }
+
+        // 작성자 필수, 글자 수 검증
+        if (writer == null || writer.length() < 3 || writer.length() >= 5) {
+            message.append("작성자는 3글자 이상, 5글자 미만으로 입력해주세요.\n");
+        }
+
+        // 비밀번호 필수, 글자 수, 패턴 검증
+        if (password == null || password.length() < 4 || password.length() >= 16
+                || !password.matches("^(?=.*[a-zA-Z])(?=.*\\d)"
+                + "(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]+$")) {
+            message.append("비밀번호는 4글자 이상, 16글자 미만의 영문,"
+                    + " 숫자, 특수문자 조합으로 입력해주세요.\n");
+        }
+
+        // 제목 필수, 글자 수 검증
+        if (title == null || title.length() < 4 || title.length() >= 100) {
+            message.append("제목은 4글자 이상, 100글자 미만으로 입력해주세요.\n");
+        }
+
+        // 내용 필수, 글자 수 검증
+        if (content == null || content.length() < 4
+                || content.length() >= 2000) {
+            message.append("내용은 4글자 이상, 2000글자 미만으로 입력해주세요.\n");
+        }
+
+        if (message.length() > 0) {
+            throw new BoardCanNotPost(boardPostRequestDto,
+                    boardSearchCondition, message.toString());
+
         }
     }
 

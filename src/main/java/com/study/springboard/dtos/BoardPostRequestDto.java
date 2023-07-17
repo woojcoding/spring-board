@@ -21,8 +21,6 @@ public class BoardPostRequestDto {
 
     private String password; // 비밀번호
 
-    private String password2; // 재확인용 비밀번호
-
     private String title; // 제목
 
     private String content; // 내용
